@@ -12,7 +12,5 @@
         _homeViewModel = homeViewModel;
         _scoreViewModel = scoreViewModel;
         _configViewModel = configViewModel;
-
-        homeViewModel.isVisible.Value = true;
     }
 }

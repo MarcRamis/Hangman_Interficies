@@ -2,10 +2,12 @@
 
 public class HomeViewModel : ViewModel
 {
-    public readonly ReactiveProperty<bool> isVisible;
-
+    public readonly ReactiveProperty<bool> changeUserNameIsVisible;
+    public readonly ReactiveCommand ChangeUserNameButtonPressed;
+    
     public HomeViewModel()
     {
-        isVisible = new ReactiveProperty<bool>();
+        changeUserNameIsVisible = new ReactiveProperty<bool>();
+        ChangeUserNameButtonPressed = new ReactiveCommand();
     }
 }

@@ -381,6 +381,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d35ab45af5203d443b212306f92a7e77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playButton: {fileID: 8262989695907288146}
+  _profileButton: {fileID: 2008135423719838684}
+  _popupChangeUserName: {fileID: 2008135424233097658}
 --- !u!1 &2226164829512763491
 GameObject:
   m_ObjectHideFlags: 0
