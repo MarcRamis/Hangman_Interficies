@@ -25,20 +25,20 @@ public class ButtonsController : Controller
             _homeViewModel.Position.Value = new Vector2(0, 0f);
             _scoreViewModel.Position.Value = new Vector2(1440f, 0f);
             _configViewModel.Position.Value = new Vector2(1440f, 0f);
-        });
+        }).AddTo(_disposables);
         
         _viewModel.ScoreButtonPressed.Subscribe((_) =>
         {
             _homeViewModel.Position.Value = new Vector2(-1440f, 0f);
             _scoreViewModel.Position.Value = new Vector2(0f, 0f);
             _configViewModel.Position.Value = new Vector2(1440f, 0f);
-        });
+        }).AddTo(_disposables);
         
         _viewModel.ConfigButtonPressed.Subscribe((_) =>
         {
             _homeViewModel.Position.Value = new Vector2(-1440f, 0f);
             _scoreViewModel.Position.Value = new Vector2(-1440f, 0f);
             _configViewModel.Position.Value = new Vector2(0f, 0f);
-        });
+        }).AddTo(_disposables);
     }
 }

@@ -3,16 +3,22 @@ using UnityEngine;
 
 public class HomeViewModel : ViewModel
 {
-    public readonly ReactiveProperty<bool> changeUserNameIsVisible;
-    public readonly ReactiveCommand ChangeUserNameButtonPressed;
+    public readonly ReactiveCommand PlayButtonPressed;
+    public readonly ReactiveCommand ProfileButtonPressed;
+    public readonly ReactiveCommand<string> SaveUserNameButtonPressed;
 
     public readonly ReactiveProperty<Vector2> Position;
+    public readonly ReactiveProperty<bool> UserNameIsVisible;
+    public readonly ReactiveProperty<string> ChangeName;
 
     public HomeViewModel()
     {
-        changeUserNameIsVisible = new ReactiveProperty<bool>();
-        ChangeUserNameButtonPressed = new ReactiveCommand();
+        PlayButtonPressed = new ReactiveCommand().AddTo(_disposables);
+        ProfileButtonPressed = new ReactiveCommand().AddTo(_disposables);
+        SaveUserNameButtonPressed = new ReactiveCommand<string>().AddTo(_disposables);
 
-        Position = new ReactiveProperty<Vector2>();
+        UserNameIsVisible = new ReactiveProperty<bool>().AddTo(_disposables);
+        Position = new ReactiveProperty<Vector2>().AddTo(_disposables);
+        ChangeName = new ReactiveProperty<string>().AddTo(_disposables); 
     }
 }

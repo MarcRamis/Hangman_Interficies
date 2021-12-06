@@ -19,18 +19,6 @@ public class ButtonsView : View
     {
         _viewModel = viewModel;
 
-        //_viewModel.HomeRectTransform.Subscribe((newPos) =>{
-        //    _homeRectTransform.DOAnchorPos(newPos, 1f,true);
-        //});
-        //
-        //_viewModel.ScoreRectTransform.Subscribe((newPos) => {
-        //    _scoreRectTransform.DOAnchorPos(newPos, 1f, true);
-        //});
-        //
-        //_viewModel.ConfigRectTransform.Subscribe((newPos) => {
-        //    _configRectTransform.DOAnchorPos(newPos, 1f, true);
-        //});
-
         _homeButton.onClick.AddListener(() =>
         {
             _viewModel.HomeButtonPressed.Execute();
