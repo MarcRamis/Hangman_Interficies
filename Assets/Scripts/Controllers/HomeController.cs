@@ -8,11 +8,8 @@ public class HomeController : Controller
     {
         _viewModel = viewModel;
 
-        _viewModel
-          .ChangeUserNameButtonPressed
-          .Subscribe((_) =>
-          {
+        _viewModel.ChangeUserNameButtonPressed.Subscribe((_) => {
               _viewModel.changeUserNameIsVisible.Value = true;
-          });
+          }).AddTo(_disposables);
     }
 }

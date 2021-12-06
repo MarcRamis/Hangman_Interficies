@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using DG.Tweening;
 
 public class HomeView : View
 {
@@ -13,6 +14,10 @@ public class HomeView : View
     public void SetViewModel(HomeViewModel viewModel)
     {
         _viewModel = viewModel;
+
+        _viewModel.Position.Subscribe((position) => {
+            GetComponent<RectTransform>().DOAnchorPos(position, 1f, true);
+        }).AddTo(_disposables);
 
         _viewModel.changeUserNameIsVisible.Subscribe((isVisible) =>{
             _popupChangeUserName.SetActive(isVisible);

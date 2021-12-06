@@ -1,4 +1,7 @@
-﻿public class ButtonsController : Controller
+﻿using UnityEngine;
+using UniRx;
+
+public class ButtonsController : Controller
 {
     private readonly ButtonsViewModel _viewModel;
 
@@ -12,5 +15,30 @@
         _homeViewModel = homeViewModel;
         _scoreViewModel = scoreViewModel;
         _configViewModel = configViewModel;
+
+        _homeViewModel.Position.Value = new Vector2(0f, 0f);
+        _scoreViewModel.Position.Value = new Vector2(1440f, 0f);
+        _configViewModel.Position.Value = new Vector2(1440f, 0f);
+
+        _viewModel.HomeButtonPressed.Subscribe((_) =>
+        {
+            _homeViewModel.Position.Value = new Vector2(0, 0f);
+            _scoreViewModel.Position.Value = new Vector2(1440f, 0f);
+            _configViewModel.Position.Value = new Vector2(1440f, 0f);
+        });
+        
+        _viewModel.ScoreButtonPressed.Subscribe((_) =>
+        {
+            _homeViewModel.Position.Value = new Vector2(-1440f, 0f);
+            _scoreViewModel.Position.Value = new Vector2(0f, 0f);
+            _configViewModel.Position.Value = new Vector2(1440f, 0f);
+        });
+        
+        _viewModel.ConfigButtonPressed.Subscribe((_) =>
+        {
+            _homeViewModel.Position.Value = new Vector2(-1440f, 0f);
+            _scoreViewModel.Position.Value = new Vector2(-1440f, 0f);
+            _configViewModel.Position.Value = new Vector2(0f, 0f);
+        });
     }
 }

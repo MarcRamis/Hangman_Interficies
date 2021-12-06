@@ -1,11 +1,12 @@
 ﻿using UniRx;
+using UnityEngine;
 
 public class ConfigViewModel : ViewModel
 {
-    public readonly ReactiveProperty<bool> isVisible;
+    public readonly ReactiveProperty<Vector2> Position;
 
     public ConfigViewModel()
     {
-        isVisible = new ReactiveProperty<bool>();
+        Position = new ReactiveProperty<Vector2>();
     }
 }

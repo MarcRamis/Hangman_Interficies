@@ -1,11 +1,12 @@
 ﻿using UniRx;
+using UnityEngine;
 
 public class ScoreViewModel : ViewModel
 {
-    public readonly ReactiveProperty<bool> isVisible;
+    public readonly ReactiveProperty<Vector2> Position;
 
     public ScoreViewModel()
     {
-        isVisible = new ReactiveProperty<bool>();
+        Position = new ReactiveProperty<Vector2>();
     }
 }

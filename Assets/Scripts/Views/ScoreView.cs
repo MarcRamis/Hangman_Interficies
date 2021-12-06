@@ -1,4 +1,7 @@
 ﻿using UniRx;
+using UnityEngine;
+using DG.Tweening;
+
 
 public class ScoreView : View
 {
@@ -9,11 +12,8 @@ public class ScoreView : View
     {
         _viewModel = viewModel;
 
-        _viewModel
-            .isVisible
-            .Subscribe((isVisible) =>
-            {
-                gameObject.SetActive(isVisible);
-            });
+        _viewModel.Position.Subscribe((position) => {
+            GetComponent<RectTransform>().DOAnchorPos(position, 1f, true);
+        }).AddTo(_disposables);
     }
 }
