@@ -877,8 +877,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9181492165167786070}
+  - component: {fileID: 607068725904009300}
   m_Layer: 5
-  m_Name: HudPanel
+  m_Name: ButtonsPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -904,3 +905,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &607068725904009300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9181492165167786071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b300842814c37684da9749ea55fcc3c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _homeRectTransform: {fileID: 2008135424693516391, guid: 085c44933c3da8546ba7ef31ffbd992c, type: 3}
+  _scoreRectTransform: {fileID: 6741574403346913420, guid: 19e6b7bd74c610b40bb638fa733cb8d0, type: 3}
+  _configRectTransform: {fileID: 9065343281656615029, guid: 83ed6983aff695446af6fa87a9231b3a, type: 3}
+  _mainCamera: {fileID: 0}
+  _homeButton: {fileID: 454969773}
+  _scoreButton: {fileID: 2056148441}
+  _configButton: {fileID: 1167994369}
