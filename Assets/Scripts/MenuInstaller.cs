@@ -30,8 +30,9 @@ public class MenuInstaller : MonoBehaviour
         scoreView.SetViewModel(scoreViewModel);
         configView.SetViewModel(configViewModel);
         buttonsView.SetViewModel(buttonsViewModel);
-
+        
         new HomeController(homeViewModel).AddTo(_disposables);
+        new ConfigController(configViewModel).AddTo(_disposables);
         new ButtonsController(buttonsViewModel, homeViewModel, scoreViewModel, configViewModel).AddTo(_disposables);
     }
 
