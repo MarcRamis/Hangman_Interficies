@@ -10,19 +10,21 @@ public class LoadAnim : MonoBehaviour
     [SerializeField] private Image loadCircle;
 
     // Start is called before the first frame update
+    FirebaseLogService _firebaseLogService;
 
     private void Awake()
     {
         var eventDispatcher = new EventDispatcherService();
-        var firebaseLogService = new FirebaseLogService(eventDispatcher);
+        _firebaseLogService = new FirebaseLogService(eventDispatcher);
 
-        var doAuthUseCase = new DoAuthUseCase(firebaseLogService, eventDispatcher);
+        var doAuthUseCase = new DoAuthUseCase(_firebaseLogService, eventDispatcher);
 
         eventDispatcher.Subscribe<LogEvent>(ChangeScene);
     }
 
     void Start()
     {
+        _firebaseLogService.Init();
         InvokeRepeating("LoadAnimation", 0, 1.5f);
     }
 

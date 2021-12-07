@@ -1,5 +1,7 @@
 public interface IFirebaseLogService
 {
-    void Login();
+    void Log();
     string GetID();
+    void SetData();
+    void LoadData();
 }

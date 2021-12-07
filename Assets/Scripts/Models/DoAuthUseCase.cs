@@ -12,20 +12,18 @@ public class DoAuthUseCase : IDoAuthUseCase
         eventDispatcherService.Subscribe<bool>(AlreadyConnected);
     }
 
-    public void Log()
-    {
-        firebaseLogService.Login();
-    }
     public void AlreadyConnected(bool data)
     {
         if (data)
         {
-            Debug.Log("User exists");
             eventDispatcherService.Dispatch(new LogEvent(firebaseLogService.GetID()));
+            Debug.Log("User exists");
         }
         else
         {
-            Log();
+            firebaseLogService.Log();
+            firebaseLogService.SetData();
+            
             eventDispatcherService.Dispatch(new LogEvent(firebaseLogService.GetID()));
             Debug.Log("User doesn't exist");
         }
