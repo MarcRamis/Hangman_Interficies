@@ -17,6 +17,6 @@ public class InitPresenter : Presenter
     private void ChangeScene(LogEvent data)
     {
         Debug.Log(data.Text);
-        //SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("Menu");
     }
 }

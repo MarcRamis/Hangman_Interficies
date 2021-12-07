@@ -30,10 +30,17 @@ public class MenuInstaller : MonoBehaviour
         scoreView.SetViewModel(scoreViewModel);
         configView.SetViewModel(configViewModel);
         buttonsView.SetViewModel(buttonsViewModel);
+
+        var eventDispatcherService = new EventDispatcherService();
+        var firebaseStoreService = new FirebaseStoreService(eventDispatcherService);
         
-        new HomeController(homeViewModel).AddTo(_disposables);
+        var editNameUseCase = new EditNameUseCase(firebaseStoreService, eventDispatcherService);
+
+        new HomeController(homeViewModel,editNameUseCase).AddTo(_disposables);
         new ConfigController(configViewModel).AddTo(_disposables);
         new ButtonsController(buttonsViewModel, homeViewModel, scoreViewModel, configViewModel).AddTo(_disposables);
+
+        new HomePresenter(homeViewModel, eventDispatcherService).AddTo(_disposables);
     }
 
     private void OnDestroy()

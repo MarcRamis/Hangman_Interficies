@@ -6,7 +6,7 @@ public class ConfigViewModel : ViewModel
     public readonly ReactiveCommand RegisterButtonPressed;
     public readonly ReactiveCommand LoginButtonPressed;
     public readonly ReactiveCommand LogoutButtonPressed;
-    public readonly ReactiveCommand<UserNameLog> SaveButtonPressed;
+    public readonly ReactiveCommand<UserNameLogEvent> SaveButtonPressed;
     public readonly ReactiveCommand ExitButtonPressed;
 
     public readonly ReactiveProperty<Vector2> Position;
@@ -23,7 +23,7 @@ public class ConfigViewModel : ViewModel
         RegisterButtonPressed = new ReactiveCommand().AddTo(_disposables);
         LoginButtonPressed = new ReactiveCommand().AddTo(_disposables);
         LogoutButtonPressed = new ReactiveCommand().AddTo(_disposables);
-        SaveButtonPressed = new ReactiveCommand<UserNameLog>().AddTo(_disposables);
+        SaveButtonPressed = new ReactiveCommand<UserNameLogEvent>().AddTo(_disposables);
         ExitButtonPressed = new ReactiveCommand().AddTo(_disposables);
 
         Position = new ReactiveProperty<Vector2>().AddTo(_disposables);

@@ -4,10 +4,14 @@ using UnityEngine;
 public class HomeController : Controller
 {
     private readonly HomeViewModel _viewModel;
+    private readonly IEditNameUseCase _editNameUseCase;
 
-    public HomeController(HomeViewModel viewModel)
+    public HomeController(HomeViewModel viewModel, IEditNameUseCase editNameUseCase)
     {
         _viewModel = viewModel;
+        _editNameUseCase = editNameUseCase;
+
+        editNameUseCase.SetUserNameFromFirestore();
 
         _viewModel.PlayButtonPressed.Subscribe((_) =>
         {
@@ -18,10 +22,10 @@ public class HomeController : Controller
         {
             _viewModel.UserNameIsVisible.Value = true;
         }).AddTo(_disposables);
-
+        
         _viewModel.SaveUserNameButtonPressed.Subscribe((changeNameText) =>
         {
-            // Use case que guarda el nombre en la firestore
+            // Use case que cambia el nombre en la firestore
             _viewModel.UserNameIsVisible.Value = false;
         }).AddTo(_disposables);
     }
