@@ -21,8 +21,7 @@ public class DoAuthUseCase : IDoAuthUseCase
         }
         else
         {
-            firebaseLogService.Log();
-            firebaseLogService.SetData();
+            firebaseLogService.LogAnonym();
             
             eventDispatcherService.Dispatch(new LogEvent(firebaseLogService.GetID()));
             Debug.Log("User doesn't exist");

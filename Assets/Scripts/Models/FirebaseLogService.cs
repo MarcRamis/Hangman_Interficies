@@ -31,7 +31,7 @@ public class FirebaseLogService : IFirebaseLogService
         });
     }
 
-    public void Log()
+    public void LogAnonym()
     {
         Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
         auth.SignInAnonymouslyAsync().ContinueWithOnMainThread(task =>
@@ -43,11 +43,12 @@ public class FirebaseLogService : IFirebaseLogService
 
             Firebase.Auth.FirebaseUser newUser = task.Result;
             Debug.Log("Usuario anonimo creado");
+            SetDefaultData();
             eventDispatcher.Dispatch(new LogEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId));
         });
     }
 
-    public void SetData()
+    public void SetDefaultData()
     {
         FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
         var user = new User("DefaultName");
