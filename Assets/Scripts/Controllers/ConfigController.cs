@@ -1,4 +1,5 @@
 ﻿using UniRx;
+using UnityEngine;
 
 public class ConfigController : Controller
 {
@@ -8,6 +9,9 @@ public class ConfigController : Controller
         _viewModel = viewModel;
 
         _viewModel.LogButtonIsVisible.Value = true;
+
+        _viewModel.AudioColor.Value = Green1();
+        _viewModel.MessagesColor.Value = Green1();
 
         _viewModel.LoginButtonPressed.Subscribe((_) =>
         {
@@ -38,5 +42,43 @@ public class ConfigController : Controller
             _viewModel.LogoutIsVisible.Value = false;
             _viewModel.LogButtonIsVisible.Value = true;
         }).AddTo(_disposables);
+
+        _viewModel.AudioButtonPressed.Subscribe((_) =>
+        {
+            if (_viewModel.AudioColor.Value == Red1())
+            {
+                _viewModel.AudioColor.Value = Green1();
+            }
+            else
+            {
+                _viewModel.AudioColor.Value = Red1();
+            }
+        }).AddTo(_disposables);
+
+        _viewModel.MessagesButtonPressed.Subscribe((_) =>
+        {
+            if (_viewModel.MessagesColor.Value == Red1())
+            {
+                _viewModel.MessagesColor.Value = Green1();
+            }
+            else
+            {
+                _viewModel.MessagesColor.Value = Red1();
+            }
+        }).AddTo(_disposables);
+    }
+
+    Color Green1()
+    {
+        return Convert(0f, 200f, 0f);
+    }
+    Color Red1()
+    {
+        return Convert(200f, 0f, 0f);
+    }
+
+    Color Convert(float r, float g, float b)
+    {
+        return new Color(r/255f, g/255f, b/255f);
     }
 }

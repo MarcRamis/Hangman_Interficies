@@ -27,7 +27,6 @@ public class HomeController : Controller
         _viewModel.SaveUserNameButtonPressed.Subscribe((changeNameText) =>
         {
             _editNameUseCase.Edit(changeNameText);
-            // Use case que cambia el nombre en la firestore
             _viewModel.UserNameIsVisible.Value = false;
         }).AddTo(_disposables);
     }
