@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using Firebase;
 using Firebase.Database;
 using static Firebase.Extensions.TaskExtension;
@@ -8,6 +10,7 @@ using static Firebase.Extensions.TaskExtension;
 public class RealTimeDataBase_Code : MonoBehaviour
 {
     DatabaseReference reference;
+    [SerializeField] private GameObject[] userScores;
     // Start is called before the first frame update
     void Start()
     {
@@ -91,11 +94,16 @@ public class RealTimeDataBase_Code : MonoBehaviour
 
         // Do something with the data in args.Snapshot
         Debug.Log("Number of players - " + (args.Snapshot.ChildrenCount));
+        int i = 0;
         foreach (DataSnapshot user in args.Snapshot.Children)
         {
             IDictionary dictUser = (IDictionary)user.Value;
             Debug.Log("2 - P" + dictUser["position"] + " - " + dictUser["username"] + " -S " + dictUser["score"] + " -T " + dictUser["timer"]);
-
+            userScores[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = dictUser["position"].ToString();
+            userScores[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = dictUser["username"].ToString();
+            userScores[i].transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = dictUser["score"].ToString();
+            userScores[i].transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = dictUser["timer"].ToString();
+            i++;
         }
 
     }
