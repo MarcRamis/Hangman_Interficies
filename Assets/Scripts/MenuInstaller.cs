@@ -36,7 +36,9 @@ public class MenuInstaller : MonoBehaviour
         
         var editNameUseCase = new EditNameUseCase(firebaseStoreService, eventDispatcherService);
 
-        new HomeController(homeViewModel,editNameUseCase).AddTo(_disposables);
+        var fireBaseAnalytics = new FireBaseAnalyticsService();
+
+        new HomeController(homeViewModel,editNameUseCase, fireBaseAnalytics).AddTo(_disposables);
         new ConfigController(configViewModel).AddTo(_disposables);
         new ButtonsController(buttonsViewModel, homeViewModel, scoreViewModel, configViewModel).AddTo(_disposables);
 

@@ -5,17 +5,20 @@ public class HomeController : Controller
 {
     private readonly HomeViewModel _viewModel;
     private readonly IEditNameUseCase _editNameUseCase;
+    private readonly IFireBaseAnalyticsService _fireBaseAnalytics;
 
-    public HomeController(HomeViewModel viewModel, IEditNameUseCase editNameUseCase)
+    public HomeController(HomeViewModel viewModel, IEditNameUseCase editNameUseCase, IFireBaseAnalyticsService fireBaseAnalytics)
     {
         _viewModel = viewModel;
         _editNameUseCase = editNameUseCase;
+        _fireBaseAnalytics = fireBaseAnalytics;
 
         editNameUseCase.SetUserNameFromFirestore();
 
         _viewModel.PlayButtonPressed.Subscribe((_) =>
         {
             Debug.Log("Go Play");
+            _fireBaseAnalytics.StartLevel();
         }).AddTo(_disposables);
 
         _viewModel.ProfileButtonPressed.Subscribe((_) =>
