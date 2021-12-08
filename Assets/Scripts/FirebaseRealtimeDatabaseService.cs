@@ -1,26 +1,38 @@
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using Firebase.Database;
 using static Firebase.Extensions.TaskExtension;
 
-public class RealTimeDataBase_Code : MonoBehaviour
+public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabaseService
 {
-    DatabaseReference reference;
-    //[SerializeField] private GameObject[] userScores;
-    // Start is called before the first frame update
-    void Start()
+    IEventDispatcherService _eventDispatcher;
+    
+    private List<ScoreUserPrefs> _scoreUserPrefs;
+
+    public FirebaseRealtimeDatabaseService(IEventDispatcherService eventDispatcher)
     {
-        reference = FirebaseDatabase.DefaultInstance.RootReference;
-        OrderedListByScore();
-        OrderedListByPosition();
+        _eventDispatcher = eventDispatcher;
     }
 
-    private void ReadDataBase()
+    public IReadOnlyList<ScoreUserPrefs> GetAll()
     {
-        FirebaseDatabase.DefaultInstance
-        .GetReference("users")
-        .GetValueAsync().ContinueWithOnMainThread(task => {
+        var scoreUsers = new List<ScoreUserPrefs>();
+
+        foreach (var scoreUser in scoreUsers)
+        {
+            var taskEntity = new ScoreUserPrefs(scoreUser.Username, scoreUser.Position, scoreUser.Score, scoreUser.Timer);
+            _scoreUserPrefs.Add(taskEntity);
+        }
+        
+        return _scoreUserPrefs;
+    }
+
+    public void ReadDataBase()
+    {
+        FirebaseDatabase.DefaultInstance.GetReference("users")
+            .GetValueAsync().ContinueWithOnMainThread(task =>
+        {
             if (task.IsFaulted)
             {
                 // Handle the error...
@@ -29,24 +41,26 @@ public class RealTimeDataBase_Code : MonoBehaviour
             {
                 DataSnapshot snapshot = task.Result;
                 // Do something with snapshot...
-                foreach(DataSnapshot user in snapshot.Children)
+                foreach (DataSnapshot user in snapshot.Children)
                 {
                     IDictionary dictUser = (IDictionary)user.Value;
                     Debug.Log("P" + dictUser["position"] + " - " + dictUser["username"] + " -S " + dictUser["score"] + " -T " + dictUser["timer"]);
                 }
             }
-      });
+
+        });
     }
 
-    private void OrderedListByScore()
+    public void OrderedListByScore()
     {
-        FirebaseDatabase.DefaultInstance
-        .GetReference("users").OrderByChild("score")
+        FirebaseDatabase.DefaultInstance.GetReference("users").OrderByChild("score")
         .ValueChanged += HandleValueChanged;
     }
 
-    void HandleValueChanged(object sender, ValueChangedEventArgs args)
+    private void HandleValueChanged(object sender, ValueChangedEventArgs args)
     {
+        DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+
         if (args.DatabaseError != null)
         {
             Debug.LogError(args.DatabaseError.Message);
@@ -60,22 +74,20 @@ public class RealTimeDataBase_Code : MonoBehaviour
         {
             IDictionary dictUser = (IDictionary)user.Value;
             //Debug.Log("P" + dictUser["position"] + " - " + dictUser["username"] + " -S " + dictUser["score"] + " -T " + dictUser["timer"]);
-           
+
             ScoreUserPrefs myUser = new ScoreUserPrefs(dictUser["username"].ToString(), i, int.Parse(dictUser["score"].ToString()), float.Parse(dictUser["timer"].ToString()));
             i--;
             string json = JsonUtility.ToJson(myUser);
             reference.Child("users").Child(user.Key).SetRawJsonValueAsync(json);
         }
-
     }
 
-    private void OrderedListByPosition()
+    public void OrderedListByPosition()
     {
-        FirebaseDatabase.DefaultInstance
-        .GetReference("users").OrderByChild("position")
+        FirebaseDatabase.DefaultInstance.GetReference("users").OrderByChild("position")
         .ValueChanged += HandleValueChanged2;
     }
-    void HandleValueChanged2(object sender, ValueChangedEventArgs args)
+    private void HandleValueChanged2(object sender, ValueChangedEventArgs args)
     {
         if (args.DatabaseError != null)
         {
@@ -99,3 +111,4 @@ public class RealTimeDataBase_Code : MonoBehaviour
 
     }
 }
+

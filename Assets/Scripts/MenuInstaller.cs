@@ -33,7 +33,8 @@ public class MenuInstaller : MonoBehaviour
 
         var eventDispatcherService = new EventDispatcherService();
         var firebaseStoreService = new FirebaseStoreService(eventDispatcherService);
-        
+        var firebaseRealtimeDatabaseService = new FirebaseRealtimeDatabaseService(eventDispatcherService);
+
         var editNameUseCase = new EditNameUseCase(firebaseStoreService, eventDispatcherService);
 
         new HomeController(homeViewModel,editNameUseCase).AddTo(_disposables);
@@ -41,6 +42,8 @@ public class MenuInstaller : MonoBehaviour
         new ButtonsController(buttonsViewModel, homeViewModel, scoreViewModel, configViewModel).AddTo(_disposables);
 
         new HomePresenter(homeViewModel, eventDispatcherService).AddTo(_disposables);
+
+        var _loadAllScoreUsersUseCase = new LoadAllScoreUsersUseCase(firebaseRealtimeDatabaseService, eventDispatcherService);
     }
 
     private void OnDestroy()
