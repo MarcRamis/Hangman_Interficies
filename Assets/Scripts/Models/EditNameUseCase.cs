@@ -12,4 +12,10 @@
     {
         _firebaseStoreService.GetCurrentUserName();
     }
+
+    public void Edit(string changeName)
+    {
+        _firebaseStoreService.StoreNewUserName(changeName);
+        _firebaseStoreService.GetCurrentUserName();
+    }
 }

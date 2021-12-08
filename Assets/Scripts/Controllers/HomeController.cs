@@ -20,11 +20,13 @@ public class HomeController : Controller
 
         _viewModel.ProfileButtonPressed.Subscribe((_) =>
         {
+            _viewModel.ChangeName.SetValueAndForceNotify(string.Empty);
             _viewModel.UserNameIsVisible.Value = true;
         }).AddTo(_disposables);
         
         _viewModel.SaveUserNameButtonPressed.Subscribe((changeNameText) =>
         {
+            _editNameUseCase.Edit(changeNameText);
             // Use case que cambia el nombre en la firestore
             _viewModel.UserNameIsVisible.Value = false;
         }).AddTo(_disposables);

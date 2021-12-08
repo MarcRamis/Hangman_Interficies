@@ -28,4 +28,36 @@ public class FirebaseStoreService : IFirebaseStoreService
             }
         });
     }
+
+    public void StoreNewUserName(string newUserName)
+    {
+        FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
+        var user = new User(newUserName);
+        DocumentReference docRef = db.Collection("users").Document(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+
+        docRef.SetAsync(user).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted)
+            {
+                LoadData();
+            }
+            else
+                Debug.LogError(task.Exception);
+        });
+    }
+
+    public void LoadData()
+    {
+        FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
+
+        CollectionReference usersRef = db.Collection("users");
+        usersRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+        {
+            QuerySnapshot snapshot = task.Result;
+            foreach (DocumentSnapshot document in snapshot.Documents)
+            {
+                var user = document.ConvertTo<User>();
+            }
+        });
+    }
 }

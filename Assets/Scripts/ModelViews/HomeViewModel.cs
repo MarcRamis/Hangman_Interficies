@@ -20,7 +20,7 @@ public class HomeViewModel : ViewModel
 
         UserNameIsVisible = new ReactiveProperty<bool>().AddTo(_disposables);
         Position = new ReactiveProperty<Vector2>().AddTo(_disposables);
-        ChangeName = new ReactiveProperty<string>().AddTo(_disposables); 
+        ChangeName = new ReactiveProperty<string>(string.Empty).AddTo(_disposables); 
         UserNameText = new ReactiveProperty<string>().AddTo(_disposables);
     }
 }

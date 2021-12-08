@@ -27,7 +27,7 @@ public class HomeView : View
             _inputField.gameObject.SetActive(changeUserNameIsVisible);
         }).AddTo(_disposables);
 
-        _viewModel.ChangeName.Subscribe((changeName) =>
+        _viewModel.ChangeName.Subscribe(changeName =>
         {
             _inputField.SetTextWithoutNotify(changeName);
         }).AddTo(_disposables);
