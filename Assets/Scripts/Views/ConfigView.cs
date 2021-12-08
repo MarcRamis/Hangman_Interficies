@@ -11,9 +11,14 @@ public class ConfigView : View
     [SerializeField] private Button _logoutButton;
     [SerializeField] private Button _saveButton;
     [SerializeField] private Button _exitButton;
+    [SerializeField] private Button _audioButton;
+    [SerializeField] private Button _messagesButton;
 
     [SerializeField] private TMP_InputField _emailInputField;
     [SerializeField] private TMP_InputField _passwordInputField;
+
+    [SerializeField] private Image _audioImage;
+    [SerializeField] private Image _messagesImage;
 
     private ConfigViewModel _viewModel;
 
@@ -24,6 +29,7 @@ public class ConfigView : View
         _viewModel.Position.Subscribe((position) => {
             GetComponent<RectTransform>().DOAnchorPos(position, 1f, true);
         }).AddTo(_disposables);
+
 
         _viewModel.LogButtonIsVisible.Subscribe((isVisible) =>
         {
@@ -54,9 +60,22 @@ public class ConfigView : View
         {
             _passwordInputField.SetTextWithoutNotify(textPassword);
         }).AddTo(_disposables);
+        
+        _viewModel.AudioColor.Subscribe((newColor) =>
+        {
+            _audioImage.DOColor(newColor, 0.5f);
+        }).AddTo(_disposables);
 
+        _viewModel.MessagesColor.Subscribe((newColor) =>
+        {
+            _messagesImage.DOColor(newColor, 0.5f);
+        }).AddTo(_disposables);
 
+        ButtonsExecute();
+    }
 
+    private void ButtonsExecute()
+    {
         _registerButton.onClick.AddListener(() =>
         {
             _viewModel.RegisterButtonPressed.Execute();
@@ -69,7 +88,7 @@ public class ConfigView : View
 
         _saveButton.onClick.AddListener(() =>
         {
-            _viewModel.SaveButtonPressed.Execute(new UserNameLog(_emailInputField.text, _passwordInputField.text));
+            _viewModel.SaveButtonPressed.Execute(new UserNameLogEvent(_emailInputField.text, _passwordInputField.text));
         });
 
         _exitButton.onClick.AddListener(() =>
@@ -81,5 +100,16 @@ public class ConfigView : View
         {
             _viewModel.LogoutButtonPressed.Execute();
         });
+
+        _audioButton.onClick.AddListener(() =>
+        {
+            _viewModel.AudioButtonPressed.Execute();
+        });
+
+        _messagesButton.onClick.AddListener(() =>
+        {
+            _viewModel.MessagesButtonPressed.Execute();
+        });
+
     }
 }

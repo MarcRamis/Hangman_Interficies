@@ -10,7 +10,8 @@ public class HomeView : View
     [SerializeField] private Button _profileButton;
     [SerializeField] private Button _saveUserNameButton;
     [SerializeField] private TMP_InputField _inputField;
-
+    [SerializeField] private TMP_Text _userNameText;
+    
     private HomeViewModel _viewModel;
 
     public void SetViewModel(HomeViewModel viewModel)
@@ -26,10 +27,17 @@ public class HomeView : View
             _inputField.gameObject.SetActive(changeUserNameIsVisible);
         }).AddTo(_disposables);
 
-        _viewModel.ChangeName.Subscribe((changeName) =>
+        _viewModel.ChangeName.Subscribe(changeName =>
         {
             _inputField.SetTextWithoutNotify(changeName);
         }).AddTo(_disposables);
+
+        _viewModel.UserNameText.Subscribe((nameText) =>
+        {
+            _userNameText.SetText(nameText);
+        }).AddTo(_disposables);
+
+
 
         _profileButton.onClick.AddListener(() =>
         {
