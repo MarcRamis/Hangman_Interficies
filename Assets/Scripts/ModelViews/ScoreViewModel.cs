@@ -9,7 +9,6 @@ public class ScoreViewModel : ViewModel
     public ScoreViewModel()
     {
         Position = new ReactiveProperty<Vector2>().AddTo(_disposables);
-
         ScoreUsers = new ReactiveCollection<ScoreUserItemViewModel>().AddTo(_disposables);
     }
 }

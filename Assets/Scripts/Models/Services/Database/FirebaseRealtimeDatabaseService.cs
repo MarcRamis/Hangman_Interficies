@@ -7,25 +7,10 @@ using static Firebase.Extensions.TaskExtension;
 public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabaseService
 {
     IEventDispatcherService _eventDispatcher;
-    
-    private List<ScoreUserPrefs> _scoreUserPrefs;
 
     public FirebaseRealtimeDatabaseService(IEventDispatcherService eventDispatcher)
     {
         _eventDispatcher = eventDispatcher;
-    }
-
-    public IReadOnlyList<ScoreUserPrefs> GetAll()
-    {
-        var scoreUsers = new List<ScoreUserPrefs>();
-
-        foreach (var scoreUser in scoreUsers)
-        {
-            var taskEntity = new ScoreUserPrefs(scoreUser.Username, scoreUser.Position, scoreUser.Score, scoreUser.Timer);
-            _scoreUserPrefs.Add(taskEntity);
-        }
-        
-        return _scoreUserPrefs;
     }
 
     public void ReadDataBase()
@@ -33,18 +18,20 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
         FirebaseDatabase.DefaultInstance.GetReference("users")
             .GetValueAsync().ContinueWithOnMainThread(task =>
         {
-            if (task.IsFaulted)
-            {
-                // Handle the error...
-            }
+            if (task.IsFaulted){}
             else if (task.IsCompleted)
             {
                 DataSnapshot snapshot = task.Result;
-                // Do something with snapshot...
                 foreach (DataSnapshot user in snapshot.Children)
                 {
                     IDictionary dictUser = (IDictionary)user.Value;
-                    Debug.Log("P" + dictUser["position"] + " - " + dictUser["username"] + " -S " + dictUser["score"] + " -T " + dictUser["timer"]);
+                    
+                    var scoreUser = new ScoreUserPrefs(dictUser["Username"].ToString(),
+                        int.Parse(dictUser["Position"].ToString()),
+                        int.Parse(dictUser["Score"].ToString()),
+                        float.Parse(dictUser["Timer"].ToString()));
+
+                    _eventDispatcher.Dispatch<ScoreUserPrefs>(scoreUser);
                 }
             }
 
@@ -67,18 +54,23 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
             return;
         }
 
-        // Do something with the data in args.Snapshot
-        Debug.Log("Number of players - " + (args.Snapshot.ChildrenCount));
         int i = (int)args.Snapshot.ChildrenCount;
         foreach (DataSnapshot user in args.Snapshot.Children)
         {
             IDictionary dictUser = (IDictionary)user.Value;
-            //Debug.Log("P" + dictUser["position"] + " - " + dictUser["username"] + " -S " + dictUser["score"] + " -T " + dictUser["timer"]);
 
-            ScoreUserPrefs myUser = new ScoreUserPrefs(dictUser["username"].ToString(), i, int.Parse(dictUser["score"].ToString()), float.Parse(dictUser["timer"].ToString()));
+
+            ScoreUserPrefs myUser = new ScoreUserPrefs(dictUser["Username"].ToString(), i, int.Parse(dictUser["Score"].ToString()), float.Parse(dictUser["Timer"].ToString()));
             i--;
             string json = JsonUtility.ToJson(myUser);
             reference.Child("users").Child(user.Key).SetRawJsonValueAsync(json);
+            
+            //var scoreUser = new ScoreUserPrefs(dictUser["Username"].ToString(),
+            //    int.Parse(dictUser["Position"].ToString()),
+            //    int.Parse(dictUser["Score"].ToString()),
+            //    float.Parse(dictUser["Timer"].ToString()));
+            //
+            //_eventDispatcher.Dispatch<ScoreUserPrefs>(scoreUser);
         }
     }
 
@@ -94,19 +86,16 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
             Debug.LogError(args.DatabaseError.Message);
             return;
         }
-
-        // Do something with the data in args.Snapshot
-        Debug.Log("Number of players - " + (args.Snapshot.ChildrenCount));
-        int i = 0;
         foreach (DataSnapshot user in args.Snapshot.Children)
         {
             IDictionary dictUser = (IDictionary)user.Value;
-            Debug.Log("2 - P" + dictUser["position"] + " - " + dictUser["username"] + " -S " + dictUser["score"] + " -T " + dictUser["timer"]);
-            //userScores[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = dictUser["position"].ToString();
-            //userScores[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = dictUser["username"].ToString();
-            //userScores[i].transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = dictUser["score"].ToString();
-            //userScores[i].transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = dictUser["timer"].ToString();
-            i++;
+
+            var scoreUser = new ScoreUserPrefs(dictUser["Username"].ToString(),
+                int.Parse(dictUser["Position"].ToString()),
+                int.Parse(dictUser["Score"].ToString()),
+                float.Parse(dictUser["Timer"].ToString()));
+
+            _eventDispatcher.Dispatch<ScoreUserPrefs>(scoreUser);
         }
 
     }

@@ -12,6 +12,8 @@ public class MenuInstaller : MonoBehaviour
     [SerializeField] private ConfigView _configPrefab;
     [SerializeField] private ButtonsView _buttonsPrefab;
 
+    LoadAllScoreUsersUseCase _loadAllScoreUsersUseCase;
+
     private List<IDisposable> _disposables = new List<IDisposable>();
 
     private void Awake()
@@ -42,8 +44,14 @@ public class MenuInstaller : MonoBehaviour
         new ButtonsController(buttonsViewModel, homeViewModel, scoreViewModel, configViewModel).AddTo(_disposables);
 
         new HomePresenter(homeViewModel, eventDispatcherService).AddTo(_disposables);
+        new ScorePresenter(scoreViewModel, eventDispatcherService).AddTo(_disposables);
 
-        var _loadAllScoreUsersUseCase = new LoadAllScoreUsersUseCase(firebaseRealtimeDatabaseService, eventDispatcherService);
+        _loadAllScoreUsersUseCase = new LoadAllScoreUsersUseCase(firebaseRealtimeDatabaseService, eventDispatcherService);
+    }
+
+    private void Start()
+    {
+        _loadAllScoreUsersUseCase.GetAll();
     }
 
     private void OnDestroy()
