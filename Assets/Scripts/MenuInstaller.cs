@@ -42,6 +42,7 @@ public class MenuInstaller : MonoBehaviour
 
         new HomePresenter(homeViewModel, eventDispatcherService).AddTo(_disposables);
         new ScorePresenter(scoreViewModel, eventDispatcherService).AddTo(_disposables);
+        new ConfigPresenter(configViewModel, eventDispatcherService).AddTo(_disposables);
     }
 
     private void OnDestroy()

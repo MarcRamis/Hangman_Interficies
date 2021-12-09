@@ -1,5 +1,5 @@
-public class ActivateEvent
+public class ActivateMessageEvent
 {
-    public ActivateEvent()
+    public ActivateMessageEvent()
     { }
 }

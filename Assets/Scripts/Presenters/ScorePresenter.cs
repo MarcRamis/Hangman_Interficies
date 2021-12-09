@@ -8,7 +8,5 @@ public class ScorePresenter : Presenter
         _eventDispatcherService = eventDispatcher;
         _viewModel = viewModel;
 
-        _eventDispatcherService.Dispatch<ActivateEvent>();
-
     }
 }

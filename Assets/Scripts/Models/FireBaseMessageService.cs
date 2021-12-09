@@ -14,11 +14,11 @@ public class FireBaseMessageService : IFireBaseMessageService
     {
         eventDispatcher = _eventDispatcher;
 
-        eventDispatcher.Subscribe<ActivateEvent>(Init);
+        eventDispatcher.Subscribe<ActivateMessageEvent>(Init);
 
     }
 
-    public void Init(ActivateEvent _)
+    public void Init(ActivateMessageEvent _)
     {
         Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
             var dependencyStatus = task.Result;
