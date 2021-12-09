@@ -40,7 +40,7 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
 
     public void OrderedListByScore()
     {
-        FirebaseDatabase.DefaultInstance.GetReference("users").OrderByChild("score")
+        FirebaseDatabase.DefaultInstance.GetReference("users").OrderByChild("Score")
         .ValueChanged += HandleValueChanged;
     }
 
@@ -72,11 +72,12 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
             //
             //_eventDispatcher.Dispatch<ScoreUserPrefs>(scoreUser);
         }
+        OrderedListByPosition();
     }
 
     public void OrderedListByPosition()
     {
-        FirebaseDatabase.DefaultInstance.GetReference("users").OrderByChild("position")
+        FirebaseDatabase.DefaultInstance.GetReference("users").OrderByChild("Position")
         .ValueChanged += HandleValueChanged2;
     }
     private void HandleValueChanged2(object sender, ValueChangedEventArgs args)
