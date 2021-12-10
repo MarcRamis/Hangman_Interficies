@@ -8,25 +8,21 @@ public class FireBaseMessageService : IFireBaseMessageService
 {
     readonly IEventDispatcherService eventDispatcher;
 
-    Firebase.FirebaseApp app;
-
     public FireBaseMessageService(IEventDispatcherService _eventDispatcher)
     {
         eventDispatcher = _eventDispatcher;
 
-        eventDispatcher.Subscribe<ActivateMessageEvent>(Init);
-
     }
 
-    public void Init(ActivateMessageEvent _)
+    public void Init()
     {
-        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
+        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
             var dependencyStatus = task.Result;
             if (dependencyStatus == Firebase.DependencyStatus.Available)
             {
                 // Create and hold a reference to your FirebaseApp,
                 // where app is a Firebase.FirebaseApp property of your application class.
-                app = Firebase.FirebaseApp.DefaultInstance;
+                var app = Firebase.FirebaseApp.DefaultInstance;
 
                 // Set a flag here to indicate whether Firebase is ready to use by your app.
             }
@@ -40,9 +36,9 @@ public class FireBaseMessageService : IFireBaseMessageService
 
         Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
         Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
-        Suscribe();
+        Subscribe();
     }
-    void Suscribe()
+    void Subscribe()
     {
         Firebase.Messaging.FirebaseMessaging.SubscribeAsync("/topics/FusionPrix");
     }

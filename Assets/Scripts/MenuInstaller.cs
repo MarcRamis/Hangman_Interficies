@@ -12,6 +12,8 @@ public class MenuInstaller : MonoBehaviour
     [SerializeField] private ConfigView _configPrefab;
     [SerializeField] private ButtonsView _buttonsPrefab;
 
+    StartMessagingUseCase _startMessagingUseCase;
+
     private List<IDisposable> _disposables = new List<IDisposable>();
 
     private void Awake()
@@ -33,8 +35,10 @@ public class MenuInstaller : MonoBehaviour
 
         var eventDispatcherService = new EventDispatcherService();
         var firebaseStoreService = new FirebaseStoreService(eventDispatcherService);
-        
+        var firebaseMessageService = new FireBaseMessageService(eventDispatcherService);
+
         var editNameUseCase = new EditNameUseCase(firebaseStoreService, eventDispatcherService);
+        _startMessagingUseCase = new StartMessagingUseCase(firebaseMessageService, eventDispatcherService);
 
         new HomeController(homeViewModel,editNameUseCase).AddTo(_disposables);
         new ConfigController(configViewModel).AddTo(_disposables);
@@ -43,6 +47,11 @@ public class MenuInstaller : MonoBehaviour
         new HomePresenter(homeViewModel, eventDispatcherService).AddTo(_disposables);
         new ScorePresenter(scoreViewModel, eventDispatcherService).AddTo(_disposables);
         new ConfigPresenter(configViewModel, eventDispatcherService).AddTo(_disposables);
+    }
+
+    private void Start()
+    {
+        _startMessagingUseCase.Init();
     }
 
     private void OnDestroy()

@@ -1,4 +1,4 @@
 public interface IFireBaseMessageService
 {
-    void Init(ActivateMessageEvent _);
+    void Init();
 }

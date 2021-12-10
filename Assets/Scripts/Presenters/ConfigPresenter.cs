@@ -7,7 +7,6 @@ public class ConfigPresenter : Presenter
         _eventDispatcherService = eventDispatcher;
         _viewModel = viewModel;
 
-        _eventDispatcherService.Dispatch<ActivateMessageEvent>();
     }
     
 }
