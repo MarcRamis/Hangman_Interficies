@@ -36,7 +36,14 @@ public class FireBaseMessageService : IFireBaseMessageService
 
         Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
         Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
-        Subscribe();
+        Debug.Log("Suscribe");
+        //Subscribe();
+    }
+    public void UnSuscribe()
+    {
+        Firebase.Messaging.FirebaseMessaging.TokenReceived -= OnTokenReceived;
+        Firebase.Messaging.FirebaseMessaging.MessageReceived -= OnMessageReceived;
+        Debug.Log("UnSuscribe");
     }
     void Subscribe()
     {

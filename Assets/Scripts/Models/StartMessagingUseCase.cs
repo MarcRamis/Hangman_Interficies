@@ -15,4 +15,9 @@ public class StartMessagingUseCase : IStartMessagingUseCase
     {
         _fireBaseMessageService.Init();
     }
+
+    public void End()
+    {
+        _fireBaseMessageService.UnSuscribe();
+    }
 }

@@ -238,8 +238,8 @@ PlayerSettings:
   AndroidTargetArchitectures: 1
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/alex.alcaide/Desktop/Keys/user.keystore
-  AndroidKeyaliasName: enti
+  AndroidKeystoreName: "C:/Users/alex/Documents/Universidad/Tercer A\xF1o/Interficies/Save-Keys/user.keystore"
+  AndroidKeyaliasName: alex
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0
   AndroidIsGame: 1

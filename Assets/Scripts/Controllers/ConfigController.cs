@@ -4,9 +4,11 @@ using UnityEngine;
 public class ConfigController : Controller
 {
     private ConfigViewModel _viewModel;
-    public  ConfigController(ConfigViewModel viewModel)
+    private readonly IStartMessagingUseCase _startMessagingUseCase;
+    public  ConfigController(ConfigViewModel viewModel, IStartMessagingUseCase startMessagingUseCase)
     {
         _viewModel = viewModel;
+        _startMessagingUseCase = startMessagingUseCase;
 
         _viewModel.LogButtonIsVisible.Value = true;
 
@@ -60,10 +62,12 @@ public class ConfigController : Controller
             if (_viewModel.MessagesColor.Value == Red1())
             {
                 _viewModel.MessagesColor.Value = Green1();
+                _startMessagingUseCase.Init();
             }
             else
             {
                 _viewModel.MessagesColor.Value = Red1();
+                _startMessagingUseCase.End();
             }
         }).AddTo(_disposables);
     }

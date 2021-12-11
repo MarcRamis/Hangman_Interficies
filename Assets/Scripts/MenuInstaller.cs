@@ -41,7 +41,7 @@ public class MenuInstaller : MonoBehaviour
         _startMessagingUseCase = new StartMessagingUseCase(firebaseMessageService, eventDispatcherService);
 
         new HomeController(homeViewModel,editNameUseCase).AddTo(_disposables);
-        new ConfigController(configViewModel).AddTo(_disposables);
+        new ConfigController(configViewModel, _startMessagingUseCase).AddTo(_disposables);
         new ButtonsController(buttonsViewModel, homeViewModel, scoreViewModel, configViewModel).AddTo(_disposables);
 
         new HomePresenter(homeViewModel, eventDispatcherService).AddTo(_disposables);
