@@ -10,24 +10,24 @@ public class LoginUseCase : ILoginUseCase
         _firebaseLogService = firebaseLogService;
         _eventDispatcherService = eventDispatcherService;
 
-        eventDispatcherService.Subscribe<bool>(AlreadyConnected);
+        _eventDispatcherService.Subscribe<bool>(AlreadyConnected);
     }
 
     public void AlreadyConnected(bool data)
     {
         if (data)
         {
-            //LoginEmail();
-
-            _eventDispatcherService.Dispatch(new LogEvent(_firebaseLogService.GetID()));
             Debug.Log("User exists");
+            
+            //LoginEmail(_firebaseLogService.GetCurrentUser());
+            _eventDispatcherService.Dispatch(new LogEvent(_firebaseLogService.GetID()));
         }
         else
         {
+            Debug.Log("User doesn't exist");
             LoginAnonym();
 
             _eventDispatcherService.Dispatch(new LogEvent(_firebaseLogService.GetID()));
-            Debug.Log("User doesn't exist");
         }
     }
 

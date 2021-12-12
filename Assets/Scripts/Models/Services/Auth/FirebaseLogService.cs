@@ -7,9 +7,18 @@ public class FirebaseLogService : IFirebaseLogService
 {
     readonly IEventDispatcherService eventDispatcher;
 
+    private readonly string _userNameKey = "UserNameKey";
+
+    private UserNameLog _currentUser = null;
+
     public FirebaseLogService(IEventDispatcherService _eventDispatcher)
     {
         eventDispatcher = _eventDispatcher;
+
+        _currentUser = ReadUserName();
+        Debug.Log("E: " + _currentUser.Email + ' ' + "P: " + _currentUser.Password);
+
+        //SaveUserNameOnPlayerPrefs(new UserNameLog("marc.ramis@enti.cat","123456"));
     }
 
     public void Init()
@@ -27,6 +36,7 @@ public class FirebaseLogService : IFirebaseLogService
                 UnityEngine.Debug.LogError(System.String.Format("Could not resolve all Firebase dependencies: {0}", dependencyStatus));
                 return;
             }
+
             eventDispatcher.Dispatch(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null);
         });
     }
@@ -43,6 +53,7 @@ public class FirebaseLogService : IFirebaseLogService
 
             Firebase.Auth.FirebaseUser newUser = task.Result;
             Debug.Log("Usuario anonimo creado");
+            
             SetDefaultData();
             eventDispatcher.Dispatch(new LogEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId));
         });
@@ -62,10 +73,16 @@ public class FirebaseLogService : IFirebaseLogService
                 Debug.LogError("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
                 return;
             }
-
+            
             Firebase.Auth.FirebaseUser newUser = task.Result;
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
+
+            
+            //_currentUser = ReadUserName();
+            
+            //Debug.Log("E: " + _currentUser.Email + ' ' + "P: " + _currentUser.Password);
+            SaveUserNameOnPlayerPrefs(userNameLog);
         });
     }
     public void Logout()
@@ -94,6 +111,11 @@ public class FirebaseLogService : IFirebaseLogService
             Firebase.Auth.FirebaseUser newUser = task.Result;
             Debug.LogFormat("Firebase user created successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
+
+            SetDefaultData();
+            SaveUserNameOnPlayerPrefs(userNameLog);
+            _currentUser = ReadUserName();
+            Debug.Log("E: " + _currentUser.Email + ' ' + "P: " + _currentUser.Password);
         });
     }
 
@@ -113,7 +135,6 @@ public class FirebaseLogService : IFirebaseLogService
                 Debug.LogError(task.Exception);
         });
     }
-
     public void LoadData()
     {
         FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
@@ -131,9 +152,39 @@ public class FirebaseLogService : IFirebaseLogService
             Debug.Log("Read all data from the users collection.");
         });
     }
-
     public string GetID()
     {
         return Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId;
+    }
+
+    private UserNameLog ReadUserName()
+    {
+        var userNameLog = PlayerPrefs.GetString(_userNameKey);
+        var user = JsonUtility.FromJson<UserNameLog>(userNameLog);
+
+        return user;
+    }
+
+    private void DeleteUserName()
+    {
+        PlayerPrefs.DeleteKey(_userNameKey);
+        PlayerPrefs.Save();
+
+        _currentUser = null;
+        //Debug.Log("E: " + _currentUser.Email + ' ' + "P: " + _currentUser.Password);
+    }
+
+    private void SaveUserNameOnPlayerPrefs(UserNameLog userNameLog)
+    {
+        Debug.Log("E: " + userNameLog.Email + ' ' + "P: " + userNameLog.Password);
+
+        var json = JsonUtility.ToJson(userNameLog);
+        PlayerPrefs.SetString(_userNameKey, json);
+        PlayerPrefs.Save();
+    }
+
+    public UserNameLog GetCurrentUser()
+    {
+        return _currentUser;
     }
 }

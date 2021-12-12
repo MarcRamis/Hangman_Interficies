@@ -7,4 +7,6 @@ public interface IFirebaseLogService
     void SetDefaultData();
     void LoadData();
     string GetID();
+
+    UserNameLog GetCurrentUser();
 }

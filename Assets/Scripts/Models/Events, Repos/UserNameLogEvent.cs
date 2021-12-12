@@ -1,11 +1,13 @@
-﻿public class UserNameLog
+﻿public class UserNameLogEvent
 {
+    public readonly bool UserLogged;
     public readonly string Email;
     public readonly string Password;
-    
-    public UserNameLog(string _Email, string _Password)
+
+    public UserNameLogEvent(bool userLogged, string email, string password)
     {
-        Email = _Email;
-        Password = _Password;
+        UserLogged = userLogged;
+        Email = email;
+        Password = password;
     }
 }
