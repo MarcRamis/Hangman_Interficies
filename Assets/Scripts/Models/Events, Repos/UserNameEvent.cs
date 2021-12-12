@@ -1,9 +1,9 @@
 ﻿public class UserNameEvent
 {
-    public readonly string Text;
+    public readonly string UserName;
 
-    public UserNameEvent(string _Text)
+    public UserNameEvent(string _UserName)
     {
-        Text = _Text;
+        UserName = _UserName;
     }
 }

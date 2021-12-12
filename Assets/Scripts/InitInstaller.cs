@@ -17,7 +17,7 @@ public class InitInstaller : MonoBehaviour
         var eventDispatcher = new EventDispatcherService();
         _firebaseLogService = new FirebaseLogService(eventDispatcher);
 
-        var doAuthUseCase = new DoAuthUseCase(_firebaseLogService, eventDispatcher);
+        var loginUseCase = new LoginUseCase(_firebaseLogService, eventDispatcher);
 
         new InitController(initViewModel);
         new InitPresenter(initViewModel, eventDispatcher);
