@@ -5,17 +5,20 @@ public class ConfigController : Controller
 {
     private ConfigViewModel _viewModel;
     private ICreateAccountUseCase _createAccountUseCase;
-    private ILoginUseCase _doAuthUseCase;
+    private ILoginUseCase _loginUseCase;
     private ILogoutUseCase _logoutUseCase;
 
-    public  ConfigController(ConfigViewModel viewModel, ICreateAccountUseCase createAccountUseCase, ILoginUseCase doAuthUseCase, ILogoutUseCase logoutUseCase)
+    public  ConfigController(ConfigViewModel viewModel, ICreateAccountUseCase createAccountUseCase, ILoginUseCase loginUseCase, ILogoutUseCase logoutUseCase)
     {
         _viewModel = viewModel;
         _createAccountUseCase = createAccountUseCase;
-        _doAuthUseCase = doAuthUseCase;
+        _loginUseCase = loginUseCase;
         _logoutUseCase = logoutUseCase;
 
-        _viewModel.LogButtonIsVisible.Value = true;
+        if (loginUseCase.GetCurrentUser() != null) _viewModel.LogoutIsVisible.Value = true;
+        else _viewModel.LogButtonIsVisible.Value = true;
+
+
         _viewModel.AudioColor.Value = Green1();
         _viewModel.MessagesColor.Value = Green1();
 
@@ -92,9 +95,8 @@ public class ConfigController : Controller
             }
             else if (_viewModel.IsLogin.Value)
             {
-                _doAuthUseCase.LoginEmail(userNameLog);
+                _loginUseCase.LoginEmail(userNameLog);
             }
-
         }).AddTo(_disposables);
 
         _viewModel.ExitButtonPressed.Subscribe((_) =>

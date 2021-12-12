@@ -10,16 +10,19 @@ public class LoginUseCase : ILoginUseCase
         _firebaseLogService = firebaseLogService;
         _eventDispatcherService = eventDispatcherService;
 
-        _eventDispatcherService.Subscribe<bool>(AlreadyConnected);
+        _eventDispatcherService.Subscribe<LoggedEvent>(AlreadyConnected);
     }
 
-    public void AlreadyConnected(bool data)
+    public void AlreadyConnected(LoggedEvent data)
     {
-        if (data)
+        if (data.isLogged)
         {
             Debug.Log("User exists");
             
-            //LoginEmail(_firebaseLogService.GetCurrentUser());
+            if (_firebaseLogService.GetCurrentUser() != null)
+            {
+                LoginEmail(_firebaseLogService.GetCurrentUser());
+            }
             _eventDispatcherService.Dispatch(new LogEvent(_firebaseLogService.GetID()));
         }
         else
@@ -39,5 +42,10 @@ public class LoginUseCase : ILoginUseCase
     public void LoginAnonym()
     {
         _firebaseLogService.LogAnonym();
+    }
+
+    public UserNameLog GetCurrentUser()
+    {
+        return _firebaseLogService.GetCurrentUser();
     }
 }

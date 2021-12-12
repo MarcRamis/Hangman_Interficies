@@ -1,6 +1,7 @@
 ﻿public interface ILoginUseCase
 {
-    void AlreadyConnected(bool data);
+    void AlreadyConnected(LoggedEvent data);
     void LoginEmail(UserNameLog userNameLog);
     void LoginAnonym();
+    UserNameLog GetCurrentUser();
 }

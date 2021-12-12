@@ -1,5 +1,6 @@
 public interface IFirebaseLogService
 {
+    void Init();
     void LogAnonym();
     void LogEmail(UserNameLog userNameLog);
     void RegisterEmail(UserNameLog userNameLog);
@@ -7,6 +8,6 @@ public interface IFirebaseLogService
     void SetDefaultData();
     void LoadData();
     string GetID();
-
+    void SetCurrentUser();
     UserNameLog GetCurrentUser();
 }

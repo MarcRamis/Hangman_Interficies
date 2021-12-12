@@ -7,7 +7,9 @@ public class FirebaseLogService : IFirebaseLogService
 {
     readonly IEventDispatcherService eventDispatcher;
 
-    private readonly string _userNameKey = "UserNameKey";
+    //private readonly string _userNameKey = "UserNameKey";
+    private readonly string _emailKey = "EmailKey";
+    private readonly string _passwordKey = "PasswordKey";
 
     private UserNameLog _currentUser = null;
 
@@ -15,10 +17,10 @@ public class FirebaseLogService : IFirebaseLogService
     {
         eventDispatcher = _eventDispatcher;
 
-        _currentUser = ReadUserName();
-        Debug.Log("E: " + _currentUser.Email + ' ' + "P: " + _currentUser.Password);
-
-        //SaveUserNameOnPlayerPrefs(new UserNameLog("marc.ramis@enti.cat","123456"));
+        if (PlayerPrefs.HasKey(_emailKey) && PlayerPrefs.HasKey(_passwordKey))
+        {
+            SetCurrentUser();
+        }
     }
 
     public void Init()
@@ -37,7 +39,7 @@ public class FirebaseLogService : IFirebaseLogService
                 return;
             }
 
-            eventDispatcher.Dispatch(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null);
+            eventDispatcher.Dispatch(new LoggedEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null));
         });
     }
 
@@ -78,17 +80,20 @@ public class FirebaseLogService : IFirebaseLogService
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
 
-            
-            //_currentUser = ReadUserName();
-            
-            //Debug.Log("E: " + _currentUser.Email + ' ' + "P: " + _currentUser.Password);
-            SaveUserNameOnPlayerPrefs(userNameLog);
+            if (_currentUser == null)
+            {
+                SaveUserNameOnPlayerPrefs(userNameLog);
+                SetCurrentUser();
+            }
+
         });
     }
     public void Logout()
     {
         Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
         auth.SignOut();
+        
+        DeleteUserName();
     }
 
     public void RegisterEmail(UserNameLog userNameLog)
@@ -112,10 +117,9 @@ public class FirebaseLogService : IFirebaseLogService
             Debug.LogFormat("Firebase user created successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
 
-            SetDefaultData();
             SaveUserNameOnPlayerPrefs(userNameLog);
-            _currentUser = ReadUserName();
-            Debug.Log("E: " + _currentUser.Email + ' ' + "P: " + _currentUser.Password);
+            SetCurrentUser();
+            SetDefaultData();
         });
     }
 
@@ -156,33 +160,35 @@ public class FirebaseLogService : IFirebaseLogService
     {
         return Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId;
     }
-
     private UserNameLog ReadUserName()
     {
-        var userNameLog = PlayerPrefs.GetString(_userNameKey);
-        var user = JsonUtility.FromJson<UserNameLog>(userNameLog);
+        //var defaultValue = new UserNameLog("DefaultEmail", ("DefaultPw"));
+        //var userNameLog = PlayerPrefs.GetString(_userNameKey, JsonUtility.ToJson(defaultValue));
+        //var user = JsonUtility.FromJson<UserNameLog>(userNameLog);
 
-        return user;
+        var userNameLog = new UserNameLog(PlayerPrefs.GetString(_emailKey), PlayerPrefs.GetString(_passwordKey));
+
+        return userNameLog;
     }
-
     private void DeleteUserName()
     {
-        PlayerPrefs.DeleteKey(_userNameKey);
+        PlayerPrefs.DeleteKey(_emailKey);
+        PlayerPrefs.DeleteKey(_passwordKey);
         PlayerPrefs.Save();
 
         _currentUser = null;
-        //Debug.Log("E: " + _currentUser.Email + ' ' + "P: " + _currentUser.Password);
     }
-
     private void SaveUserNameOnPlayerPrefs(UserNameLog userNameLog)
     {
-        Debug.Log("E: " + userNameLog.Email + ' ' + "P: " + userNameLog.Password);
-
-        var json = JsonUtility.ToJson(userNameLog);
-        PlayerPrefs.SetString(_userNameKey, json);
+        PlayerPrefs.SetString(_emailKey, userNameLog.Email);
+        PlayerPrefs.SetString(_passwordKey, userNameLog.Password);        
         PlayerPrefs.Save();
     }
-
+    public void SetCurrentUser()
+    {
+        _currentUser = ReadUserName();
+        //Debug.Log("E: " + _currentUser.Email + ' ' + "P: " + _currentUser.Password);
+    }
     public UserNameLog GetCurrentUser()
     {
         return _currentUser;
