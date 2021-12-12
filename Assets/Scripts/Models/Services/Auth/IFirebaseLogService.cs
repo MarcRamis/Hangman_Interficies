@@ -1,7 +1,10 @@
 public interface IFirebaseLogService
 {
     void LogAnonym();
-    string GetID();
+    void LogEmail(UserNameLog userNameLog);
+    void RegisterEmail(UserNameLog userNameLog);
+    void Logout();
     void SetDefaultData();
     void LoadData();
+    string GetID();
 }

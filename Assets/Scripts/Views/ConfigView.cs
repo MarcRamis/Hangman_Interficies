@@ -88,7 +88,7 @@ public class ConfigView : View
 
         _saveButton.onClick.AddListener(() =>
         {
-            _viewModel.SaveButtonPressed.Execute(new UserNameLogEvent(_emailInputField.text, _passwordInputField.text));
+            _viewModel.SaveButtonPressed.Execute(new UserNameLog(_emailInputField.text, _passwordInputField.text));
         });
 
         _exitButton.onClick.AddListener(() =>

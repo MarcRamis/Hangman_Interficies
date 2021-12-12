@@ -13,6 +13,6 @@
 
     private void SetUserName(UserNameEvent data)
     {
-        _viewModel.UserNameText.SetValueAndForceNotify(data.Text);
+        _viewModel.UserNameText.SetValueAndForceNotify(data.UserName);
     }
 }

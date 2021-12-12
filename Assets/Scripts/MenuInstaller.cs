@@ -12,6 +12,7 @@ public class MenuInstaller : MonoBehaviour
     [SerializeField] private ConfigView _configPrefab;
     [SerializeField] private ButtonsView _buttonsPrefab;
 
+    FirebaseLogService _firebaseLogService;
     LoadAllScoreUsersUseCase _loadAllScoreUsersUseCase;
 
     private List<IDisposable> _disposables = new List<IDisposable>();
@@ -36,11 +37,16 @@ public class MenuInstaller : MonoBehaviour
         var eventDispatcherService = new EventDispatcherService();
         var firebaseStoreService = new FirebaseStoreService(eventDispatcherService);
         var firebaseRealtimeDatabaseService = new FirebaseRealtimeDatabaseService(eventDispatcherService);
+        _firebaseLogService = new FirebaseLogService(eventDispatcherService);
+        _firebaseLogService.Init();
 
         var editNameUseCase = new EditNameUseCase(firebaseStoreService, eventDispatcherService);
+        var createAccountUseCase = new CreateAccountUseCase(eventDispatcherService, _firebaseLogService);
+        var loginUseCase = new LoginUseCase(_firebaseLogService, eventDispatcherService);
+        var logoutUseCase = new LogoutUseCase(eventDispatcherService, _firebaseLogService);
 
         new HomeController(homeViewModel,editNameUseCase).AddTo(_disposables);
-        new ConfigController(configViewModel).AddTo(_disposables);
+        new ConfigController(configViewModel, createAccountUseCase, loginUseCase, logoutUseCase).AddTo(_disposables);
         new ButtonsController(buttonsViewModel, homeViewModel, scoreViewModel, configViewModel).AddTo(_disposables);
 
         new HomePresenter(homeViewModel, eventDispatcherService).AddTo(_disposables);
