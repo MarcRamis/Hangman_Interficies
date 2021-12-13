@@ -121,11 +121,11 @@ public class ConfigController : Controller
 
     Color Green1()
     {
-        return Convert(0f, 200f, 0f);
+        return Convert(203f, 255f, 77f);
     }
     Color Red1()
     {
-        return Convert(200f, 0f, 0f);
+        return Convert(237f, 33f, 124f);
     }
 
     Color Convert(float r, float g, float b)
