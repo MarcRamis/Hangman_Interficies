@@ -14,6 +14,7 @@ public class MenuInstaller : MonoBehaviour
 
     FirebaseLogService _firebaseLogService;
     LoadAllScoreUsersUseCase _loadAllScoreUsersUseCase;
+    SendMessageUseCase _sendMessageUseCase;
 
     private List<IDisposable> _disposables = new List<IDisposable>();
 
@@ -39,14 +40,16 @@ public class MenuInstaller : MonoBehaviour
         var firebaseRealtimeDatabaseService = new FirebaseRealtimeDatabaseService(eventDispatcherService);
         _firebaseLogService = new FirebaseLogService(eventDispatcherService);
         _firebaseLogService.Init();
+        var firebaseMessageService = new FireBaseMessageService(eventDispatcherService);
 
         var editNameUseCase = new EditNameUseCase(firebaseStoreService, eventDispatcherService);
         var createAccountUseCase = new CreateAccountUseCase(eventDispatcherService, _firebaseLogService);
         var loginUseCase = new LoginUseCase(_firebaseLogService, eventDispatcherService);
         var logoutUseCase = new LogoutUseCase(eventDispatcherService, _firebaseLogService);
+        _sendMessageUseCase = new SendMessageUseCase(firebaseMessageService, eventDispatcherService);
 
         new HomeController(homeViewModel,editNameUseCase).AddTo(_disposables);
-        new ConfigController(configViewModel, createAccountUseCase, loginUseCase, logoutUseCase).AddTo(_disposables);
+        new ConfigController(configViewModel, createAccountUseCase, loginUseCase, logoutUseCase, _sendMessageUseCase).AddTo(_disposables);
         new ButtonsController(buttonsViewModel, homeViewModel, scoreViewModel, configViewModel).AddTo(_disposables);
 
         new HomePresenter(homeViewModel, eventDispatcherService).AddTo(_disposables);
@@ -58,6 +61,7 @@ public class MenuInstaller : MonoBehaviour
     private void Start()
     {
         _loadAllScoreUsersUseCase.GetAll();
+        _sendMessageUseCase.Init();
     }
 
     private void OnDestroy()

@@ -8,4 +8,5 @@
   <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBewN-ezyIGrwtoNwAl5ohcIJKW17ndrMQ</string>
   <string name="google_app_id" translatable="false">1:821833398782:android:dd0be13cc849ca1bdee8af</string>
   <string name="default_web_client_id" translatable="false">821833398782-7325pakui99ba7e9f4cbaoauu6r0808g.apps.googleusercontent.com</string>
+  <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 </resources>
