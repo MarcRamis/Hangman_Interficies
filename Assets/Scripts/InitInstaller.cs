@@ -16,9 +16,10 @@ public class InitInstaller : MonoBehaviour
         initView.SetViewModel(initViewModel);
 
         var sceneHandlerService = new UnitySceneHandler();
-        var userRepository = new UserNameLog;
+        var userRepository = new UserRepository();
 
         ServiceLocator.Instance.RegisterService<SceneHandlerService>(sceneHandlerService);
+        ServiceLocator.Instance.RegisterService<UserDataAccess>(userRepository);
 
         var eventDispatcher = new EventDispatcherService();
         _firebaseLogService = new FirebaseLogService(eventDispatcher);
@@ -36,27 +37,5 @@ public class InitInstaller : MonoBehaviour
     {
         _firebaseLogService.Init();
         _loadInitialDataUseCase.Init();
-    }
-}
-
-//public class UserRepository : UserDataAccess
-//{
-
-//}
-
-public class UserEntity
-{
-    public readonly string UserId;
-    public string Name { get; private set; }
-
-    public UserEntity(string userid, string name)
-    {
-        UserId = userid;
-        Name = name;
-    }
-
-    public void UpdateName(string name)
-    {
-        Name = name;
     }
 }
