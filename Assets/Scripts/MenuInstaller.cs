@@ -39,7 +39,6 @@ public class MenuInstaller : MonoBehaviour
         var firebaseStoreService = new FirebaseStoreService(eventDispatcherService);
         var firebaseRealtimeDatabaseService = new FirebaseRealtimeDatabaseService(eventDispatcherService);
         _firebaseLogService = new FirebaseLogService(eventDispatcherService);
-        //_firebaseLogService.Init();
         var firebaseMessageService = new FireBaseMessageService(eventDispatcherService);
 
         var editNameUseCase = new EditNameUseCase(firebaseStoreService, eventDispatcherService);
@@ -60,6 +59,7 @@ public class MenuInstaller : MonoBehaviour
 
     private void Start()
     {
+        _firebaseLogService.Init();
         _loadAllScoreUsersUseCase.GetAll();
         _sendMessageUseCase.Init();
     }

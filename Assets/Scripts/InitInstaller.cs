@@ -23,7 +23,6 @@ public class InitInstaller : MonoBehaviour
 
         var eventDispatcher = new EventDispatcherService();
         _firebaseLogService = new FirebaseLogService(eventDispatcher);
-        _firebaseLogService.Init();
 
         var loginUseCase = new LoginUseCase(_firebaseLogService, eventDispatcher);
         var loadSceneUseCase = new LoadSceneUseCase(sceneHandlerService);
@@ -36,6 +35,7 @@ public class InitInstaller : MonoBehaviour
 
     private void Start()
     {
+        _firebaseLogService.Init();
         _loadInitialDataUseCase.Init();
     }
 }
