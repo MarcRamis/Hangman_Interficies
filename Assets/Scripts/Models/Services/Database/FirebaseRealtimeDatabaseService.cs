@@ -98,7 +98,6 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
 
             _eventDispatcher.Dispatch<ScoreUserPrefs>(scoreUser);
         }
-
     }
 }
 

@@ -11,6 +11,6 @@
 
     public void GetAll()
     {
-        _firebaseRealtimeDatabaseService.OrderedListByScore();
+        _firebaseRealtimeDatabaseService.ReadDataBase();
     }
 }
