@@ -23,14 +23,14 @@ public class LoginUseCase : ILoginUseCase
             {
                 LoginEmail(_firebaseLogService.GetCurrentUser());
             }
-            _eventDispatcherService.Dispatch(new LogEvent(_firebaseLogService.GetID()));
+            //_eventDispatcherService.Dispatch(new LogEvent(_firebaseLogService.GetID()));
         }
         else
         {
             Debug.Log("User doesn't exist");
             LoginAnonym();
 
-            _eventDispatcherService.Dispatch(new LogEvent(_firebaseLogService.GetID()));
+            //_eventDispatcherService.Dispatch(new LogEvent(_firebaseLogService.GetID()));
         }
     }
 
