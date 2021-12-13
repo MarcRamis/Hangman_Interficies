@@ -11,7 +11,7 @@ public class InitPresenter : Presenter
         _viewModel = viewModel;
         _eventDispatcher = eventDispatcher;
 
-        _eventDispatcher.Subscribe<LogEvent>(ChangeScene);
+        //_eventDispatcher.Subscribe<LogEvent>(ChangeScene);
     }
 
     private void ChangeScene(LogEvent data)
