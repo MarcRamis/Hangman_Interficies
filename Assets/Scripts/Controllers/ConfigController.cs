@@ -7,13 +7,15 @@ public class ConfigController : Controller
     private ICreateAccountUseCase _createAccountUseCase;
     private ILoginUseCase _loginUseCase;
     private ILogoutUseCase _logoutUseCase;
+    private readonly ISendMessageUseCase _startMessagingUseCase;
 
-    public  ConfigController(ConfigViewModel viewModel, ICreateAccountUseCase createAccountUseCase, ILoginUseCase loginUseCase, ILogoutUseCase logoutUseCase)
+    public  ConfigController(ConfigViewModel viewModel, ICreateAccountUseCase createAccountUseCase, ILoginUseCase loginUseCase, ILogoutUseCase logoutUseCase, ISendMessageUseCase startMessagingUseCase)
     {
         _viewModel = viewModel;
         _createAccountUseCase = createAccountUseCase;
         _loginUseCase = loginUseCase;
         _logoutUseCase = logoutUseCase;
+        _startMessagingUseCase = startMessagingUseCase;
 
         if (loginUseCase.GetCurrentUser() != null) _viewModel.LogoutIsVisible.Value = true;
         else _viewModel.LogButtonIsVisible.Value = true;
@@ -35,10 +37,12 @@ public class ConfigController : Controller
             if (_viewModel.MessagesColor.Value == Red1())
             {
                 _viewModel.MessagesColor.Value = Green1();
+                _startMessagingUseCase.Init();
             }
             else
             {
                 _viewModel.MessagesColor.Value = Red1();
+                _startMessagingUseCase.End();
             }
         }).AddTo(_disposables);
     }
