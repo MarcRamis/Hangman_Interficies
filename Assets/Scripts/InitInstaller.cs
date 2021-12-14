@@ -16,10 +16,10 @@ public class InitInstaller : MonoBehaviour
         initView.SetViewModel(initViewModel);
 
         var sceneHandlerService = new UnitySceneHandler();
-        var userRepository = new UserRepository();
+        //var userRepository = new UserRepository();
 
         ServiceLocator.Instance.RegisterService<SceneHandlerService>(sceneHandlerService);
-        ServiceLocator.Instance.RegisterService<UserDataAccess>(userRepository);
+        //ServiceLocator.Instance.RegisterService<UserDataAccess>(userRepository);
 
         var eventDispatcher = new EventDispatcherService();
         _firebaseLogService = new FirebaseLogService(eventDispatcher);

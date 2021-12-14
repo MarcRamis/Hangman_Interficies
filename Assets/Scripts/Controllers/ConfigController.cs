@@ -7,15 +7,18 @@ public class ConfigController : Controller
     private ICreateAccountUseCase _createAccountUseCase;
     private ILoginUseCase _loginUseCase;
     private ILogoutUseCase _logoutUseCase;
-    private readonly ISendMessageUseCase _startMessagingUseCase;
+    private ISendMessageUseCase _startMessagingUseCase;
+    private IEditNameUseCase _editNameUseCase;
 
-    public  ConfigController(ConfigViewModel viewModel, ICreateAccountUseCase createAccountUseCase, ILoginUseCase loginUseCase, ILogoutUseCase logoutUseCase, ISendMessageUseCase startMessagingUseCase)
+    public  ConfigController(ConfigViewModel viewModel, ICreateAccountUseCase createAccountUseCase, ILoginUseCase loginUseCase, ILogoutUseCase logoutUseCase, ISendMessageUseCase startMessagingUseCase,
+        IEditNameUseCase editNameUseCase)
     {
         _viewModel = viewModel;
         _createAccountUseCase = createAccountUseCase;
         _loginUseCase = loginUseCase;
         _logoutUseCase = logoutUseCase;
         _startMessagingUseCase = startMessagingUseCase;
+        _editNameUseCase = editNameUseCase;
 
         if (loginUseCase.GetCurrentUser() != null) _viewModel.LogoutIsVisible.Value = true;
         else _viewModel.LogButtonIsVisible.Value = true;
@@ -101,6 +104,7 @@ public class ConfigController : Controller
             {
                 _loginUseCase.LoginEmail(userNameLog);
             }
+            //_editNameUseCase.SetUserNameFromFirestore();
         }).AddTo(_disposables);
 
         _viewModel.ExitButtonPressed.Subscribe((_) =>

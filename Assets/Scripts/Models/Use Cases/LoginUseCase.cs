@@ -22,6 +22,7 @@ public class LoginUseCase : ILoginUseCase
             if (_firebaseLogService.GetCurrentUser() != null)
             {
                 LoginEmail(_firebaseLogService.GetCurrentUser());
+                Debug.Log("With Email");
             }
             //_eventDispatcherService.Dispatch(new LogEvent(_firebaseLogService.GetID()));
         }
