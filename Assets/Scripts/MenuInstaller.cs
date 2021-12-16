@@ -44,7 +44,7 @@ public class MenuInstaller : MonoBehaviour
 
         _editNameUseCase = new EditNameUseCase(firebaseStoreService, eventDispatcherService);
         var createAccountUseCase = new CreateAccountUseCase(eventDispatcherService, _firebaseLogService);
-        var loginUseCase = new LoginUseCase(_firebaseLogService, eventDispatcherService);
+        var loginUseCase = new LoginUseCase(_firebaseLogService, eventDispatcherService).AddTo(_disposables);
         var logoutUseCase = new LogoutUseCase(eventDispatcherService, _firebaseLogService);
         _sendMessageUseCase = new SendMessageUseCase(firebaseMessageService, eventDispatcherService);
 
@@ -60,12 +60,10 @@ public class MenuInstaller : MonoBehaviour
 
     private void Start()
     {
-        
-        //_firebaseLogService.Init();
         StartCoroutine(_firebaseLogService.Init(0.5f));
+
         StartCoroutine(_loadAllScoreUsersUseCase.GetAll(1.0f));
         StartCoroutine(_editNameUseCase.Init(1.0f));
-
         StartCoroutine(_sendMessageUseCase.Init(1.0f));
         
     }
@@ -76,8 +74,5 @@ public class MenuInstaller : MonoBehaviour
         {
             disposable.Dispose();
         }
-
-        // Use cases
-        //loginUseCase.Dispose();
     }
 }

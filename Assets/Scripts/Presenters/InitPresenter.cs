@@ -14,9 +14,9 @@ public class InitPresenter : Presenter
         //_eventDispatcher.Subscribe<LogEvent>(ChangeScene);
     }
 
-    private void ChangeScene(LogEvent data)
-    {
-        Debug.Log(data.Text);
-        SceneManager.LoadScene("Menu");
-    }
+    //private void ChangeScene(LogEvent data)
+    //{
+    //    Debug.Log(data.Text);
+    //    SceneManager.LoadScene("Menu");
+    //}
 }

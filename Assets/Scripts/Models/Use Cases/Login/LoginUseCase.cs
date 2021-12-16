@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using System;
 
-public class LoginUseCase : ILoginUseCase
+public class LoginUseCase : ILoginUseCase, IDisposable
 {
     private readonly IFirebaseLogService _firebaseLogService;
     private readonly IEventDispatcherService _eventDispatcherService;
@@ -17,21 +18,14 @@ public class LoginUseCase : ILoginUseCase
     {
         if (data.isLogged)
         {
-            Debug.Log("User exists");
-            
             if (_firebaseLogService.GetCurrentUser() != null)
             {
                 LoginEmail(_firebaseLogService.GetCurrentUser());
-                Debug.Log("With Email");
             }
-            //_eventDispatcherService.Dispatch(new LogEvent(_firebaseLogService.GetID()));
         }
         else
         {
-            Debug.Log("User doesn't exist");
             LoginAnonym();
-
-            //_eventDispatcherService.Dispatch(new LogEvent(_firebaseLogService.GetID()));
         }
     }
 
@@ -48,5 +42,10 @@ public class LoginUseCase : ILoginUseCase
     public UserNameLog GetCurrentUser()
     {
         return _firebaseLogService.GetCurrentUser();
+    }
+
+    public void Dispose()
+    {
+        _eventDispatcherService.Unsubscribe<LoggedEvent>(AlreadyConnected);
     }
 }

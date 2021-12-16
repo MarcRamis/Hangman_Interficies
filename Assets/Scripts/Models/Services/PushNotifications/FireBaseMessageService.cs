@@ -11,20 +11,17 @@ public class FireBaseMessageService : IFireBaseMessageService
     public FireBaseMessageService(IEventDispatcherService _eventDispatcher)
     {
         eventDispatcher = _eventDispatcher;
-
     }
 
     public void Init()
     {
         Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
         Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
-        Debug.Log("Suscribe");
     }
     public void UnSuscribe()
     {
         Firebase.Messaging.FirebaseMessaging.TokenReceived -= OnTokenReceived;
         Firebase.Messaging.FirebaseMessaging.MessageReceived -= OnMessageReceived;
-        Debug.Log("UnSuscribe");
     }
     public void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token)
     {

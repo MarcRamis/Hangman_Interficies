@@ -10,8 +10,8 @@ public class ButtonsViewModel : ViewModel
     
     public ButtonsViewModel()
     {
-        HomeButtonPressed = new ReactiveCommand();
-        ScoreButtonPressed = new ReactiveCommand();
-        ConfigButtonPressed = new ReactiveCommand();
+        HomeButtonPressed = new ReactiveCommand().AddTo(_disposables);
+        ScoreButtonPressed = new ReactiveCommand().AddTo(_disposables);
+        ConfigButtonPressed = new ReactiveCommand().AddTo(_disposables);
     }
 }

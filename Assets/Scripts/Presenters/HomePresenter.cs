@@ -15,4 +15,10 @@
     {
         _viewModel.UserNameText.SetValueAndForceNotify(data.UserName);
     }
+
+    public override void Dispose()
+    {
+        base.Dispose();
+        _eventDispatcherService.Unsubscribe<UserNameEvent>(SetUserName);
+    }
 }
