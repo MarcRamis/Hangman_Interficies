@@ -1,4 +1,6 @@
-﻿public class LoadAllScoreUsersUseCase : ILoadAllScoreUsersUseCase
+﻿using System.Collections;
+using UnityEngine;
+public class LoadAllScoreUsersUseCase : ILoadAllScoreUsersUseCase
 {
     private readonly IFirebaseRealtimeDatabaseService _firebaseRealtimeDatabaseService;
     private readonly IEventDispatcherService _eventDispatcherService;
@@ -9,8 +11,9 @@
         _eventDispatcherService = eventDispatcherService;
     }
 
-    public void GetAll()
+    public IEnumerator GetAll(float time)
     {
+        yield return new WaitForSeconds(time);
         _firebaseRealtimeDatabaseService.ReadDataBase();
     }
 }

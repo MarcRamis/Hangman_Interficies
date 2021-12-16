@@ -11,7 +11,7 @@ public class HomeController : Controller
         _viewModel = viewModel;
         _editNameUseCase = editNameUseCase;
 
-        editNameUseCase.SetUserNameFromFirestore();
+        //editNameUseCase.SetUserNameFromFirestore();
 
         _viewModel.PlayButtonPressed.Subscribe((_) =>
         {

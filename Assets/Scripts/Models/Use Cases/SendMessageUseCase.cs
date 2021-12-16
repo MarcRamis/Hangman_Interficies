@@ -1,5 +1,5 @@
+using System.Collections;
 using UnityEngine;
-
 public class SendMessageUseCase : ISendMessageUseCase
 {
     private readonly IEventDispatcherService _eventDispatcherService;
@@ -13,6 +13,12 @@ public class SendMessageUseCase : ISendMessageUseCase
 
     public void Init()
     {
+        _fireBaseMessageService.Init();
+    }
+
+    public IEnumerator Init(float time)
+    {
+        yield return new WaitForSeconds(time);
         _fireBaseMessageService.Init();
     }
 

@@ -1,4 +1,6 @@
-﻿public class EditNameUseCase : IEditNameUseCase
+﻿using System.Collections;
+using UnityEngine;
+public class EditNameUseCase : IEditNameUseCase
 {
     private readonly IFirebaseStoreService _firebaseStoreService;
     private readonly IEventDispatcherService _eventDispatcherService;
@@ -16,6 +18,12 @@
     public void Edit(string changeName)
     {
         _firebaseStoreService.StoreNewUserName(changeName);
+        _firebaseStoreService.GetCurrentUserName();
+    }
+
+    public IEnumerator Init(float time)
+    {
+        yield return new WaitForSeconds(time);
         _firebaseStoreService.GetCurrentUserName();
     }
 }

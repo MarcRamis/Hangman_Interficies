@@ -61,9 +61,13 @@ public class MenuInstaller : MonoBehaviour
     private void Start()
     {
         
-        _firebaseLogService.Init();
-        _loadAllScoreUsersUseCase.GetAll();
-        _sendMessageUseCase.Init();
+        //_firebaseLogService.Init();
+        StartCoroutine(_firebaseLogService.Init(0.5f));
+        StartCoroutine(_loadAllScoreUsersUseCase.GetAll(1.0f));
+        StartCoroutine(_editNameUseCase.Init(1.0f));
+
+        StartCoroutine(_sendMessageUseCase.Init(1.0f));
+        
     }
 
     private void OnDestroy()

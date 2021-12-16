@@ -1,4 +1,5 @@
-﻿public interface ILoadAllScoreUsersUseCase
+﻿using System.Collections;
+public interface ILoadAllScoreUsersUseCase
 {
-    void GetAll();
+    IEnumerator GetAll(float time);
 }

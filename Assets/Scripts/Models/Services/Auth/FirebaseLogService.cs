@@ -46,24 +46,12 @@ public class FirebaseLogService : IFirebaseLogService
             Debug.Log(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
         });
     }
-    public void Init2()
+    public IEnumerator Init(float time)
     {
-        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
-        {
-            var dependencyStatus = task.Result;
-            if (dependencyStatus == Firebase.DependencyStatus.Available)
-            {
-
-                var app = Firebase.FirebaseApp.DefaultInstance;
-            }
-            else
-            {
-                UnityEngine.Debug.LogError(System.String.Format("Could not resolve all Firebase dependencies: {0}", dependencyStatus));
-                return;
-            }
-
-        });
+        yield return new WaitForSeconds(time);
+        Init();
     }
+    
 
     public void LogAnonym()
     {
