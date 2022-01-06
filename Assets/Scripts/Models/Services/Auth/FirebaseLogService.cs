@@ -3,6 +3,7 @@ using Firebase.Extensions;
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Threading.Tasks;
 
 public class FirebaseLogService : IFirebaseLogService
 {
@@ -23,10 +24,33 @@ public class FirebaseLogService : IFirebaseLogService
         }
     }
 
+    public async Task Init3()
+    {
+        await Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
+        {
+
+            var dependencyStatus = task.Result;
+            if (dependencyStatus == Firebase.DependencyStatus.Available)
+            {
+
+                var app = Firebase.FirebaseApp.DefaultInstance;
+            }
+            else
+            {
+                UnityEngine.Debug.LogError(System.String.Format("Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+                return;
+            }
+
+            eventDispatcher.Dispatch(new LoggedEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null));
+        });
+    }
+
     public void Init()
     {
+        
         Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
         {
+            
             var dependencyStatus = task.Result;
             if (dependencyStatus == Firebase.DependencyStatus.Available)
             {

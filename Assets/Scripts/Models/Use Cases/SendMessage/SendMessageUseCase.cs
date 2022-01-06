@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using System.Threading.Tasks;
 public class SendMessageUseCase : ISendMessageUseCase
 {
     private readonly IEventDispatcherService _eventDispatcherService;
@@ -20,6 +21,10 @@ public class SendMessageUseCase : ISendMessageUseCase
     {
         yield return new WaitForSeconds(time);
         _fireBaseMessageService.Init();
+    }
+    public async Task Init1()
+    {
+        await _fireBaseMessageService.Init1();
     }
 
     public void End()

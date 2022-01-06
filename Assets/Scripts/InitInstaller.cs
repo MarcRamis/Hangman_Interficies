@@ -38,10 +38,10 @@ public class InitInstaller : MonoBehaviour
         new InitPresenter(initViewModel, eventDispatcher).AddTo(_disposables);
     }
 
-    private void Start()
+    private async void Start()
     {
-        _firebaseLogService.Init();
-        _loadInitialDataUseCase.Init();
+        await _firebaseLogService.Init3();
+        await _loadInitialDataUseCase.Init();
     }
 
     private void OnDestroy()

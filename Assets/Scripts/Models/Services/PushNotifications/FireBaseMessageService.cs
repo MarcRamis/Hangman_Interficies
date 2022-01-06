@@ -3,6 +3,7 @@ using Firebase.Extensions;
 using UnityEngine;
 using System;
 using Firebase.Messaging;
+using System.Threading.Tasks;
 
 public class FireBaseMessageService : IFireBaseMessageService
 {
@@ -14,6 +15,11 @@ public class FireBaseMessageService : IFireBaseMessageService
     }
 
     public void Init()
+    {
+        Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
+        Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
+    }
+    public async Task Init1()
     {
         Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
         Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;

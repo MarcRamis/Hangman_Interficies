@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using System.Threading.Tasks;
 public class LoadAllScoreUsersUseCase : ILoadAllScoreUsersUseCase
 {
     private readonly IFirebaseRealtimeDatabaseService _firebaseRealtimeDatabaseService;
@@ -9,6 +10,11 @@ public class LoadAllScoreUsersUseCase : ILoadAllScoreUsersUseCase
     {
         _firebaseRealtimeDatabaseService = firebaseRealtimeDatabaseService;
         _eventDispatcherService = eventDispatcherService;
+    }
+
+    public async Task GetAll()
+    {
+        await _firebaseRealtimeDatabaseService.ReadDataBase1();
     }
 
     public IEnumerator GetAll(float time)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Firebase.Database;
+using System.Threading.Tasks;
 using static Firebase.Extensions.TaskExtension;
 
 public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabaseService
@@ -37,7 +38,30 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
 
         });
     }
+    public async Task ReadDataBase1()
+    {
+       await FirebaseDatabase.DefaultInstance.GetReference("users")
+            .GetValueAsync().ContinueWithOnMainThread(task =>
+            {
+                if (task.IsFaulted) { }
+                else if (task.IsCompleted)
+                {
+                    DataSnapshot snapshot = task.Result;
+                    foreach (DataSnapshot user in snapshot.Children)
+                    {
+                        IDictionary dictUser = (IDictionary)user.Value;
 
+                        var scoreUser = new ScoreUserPrefs(dictUser["Username"].ToString(),
+                            int.Parse(dictUser["Position"].ToString()),
+                            int.Parse(dictUser["Score"].ToString()),
+                            float.Parse(dictUser["Timer"].ToString()));
+
+                        _eventDispatcher.Dispatch<ScoreUserPrefs>(scoreUser);
+                    }
+                }
+
+            });
+    }
     public void OrderedListByScore()
     {
         FirebaseDatabase.DefaultInstance.GetReference("users").OrderByChild("Score")
