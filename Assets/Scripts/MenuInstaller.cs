@@ -58,14 +58,12 @@ public class MenuInstaller : MonoBehaviour
         _loadAllScoreUsersUseCase = new LoadAllScoreUsersUseCase(firebaseRealtimeDatabaseService, eventDispatcherService);
     }
 
-    private void Start()
+    private async void Start()
     {
-        StartCoroutine(_firebaseLogService.Init(0.5f));
-
-        StartCoroutine(_loadAllScoreUsersUseCase.GetAll(1.0f));
-        StartCoroutine(_editNameUseCase.Init(1.0f));
-        StartCoroutine(_sendMessageUseCase.Init(1.0f));
-        
+        await _firebaseLogService.Init3();
+        await _loadAllScoreUsersUseCase.GetAll();
+        await _editNameUseCase.Init1();
+        await _sendMessageUseCase.Init1();
     }
 
     private void OnDestroy()

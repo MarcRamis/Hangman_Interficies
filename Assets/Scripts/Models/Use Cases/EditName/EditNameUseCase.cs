@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using System.Threading.Tasks;
 public class EditNameUseCase : IEditNameUseCase
 {
     private readonly IFirebaseStoreService _firebaseStoreService;
@@ -25,5 +26,10 @@ public class EditNameUseCase : IEditNameUseCase
     {
         yield return new WaitForSeconds(time);
         _firebaseStoreService.GetCurrentUserName();
+    }
+
+    public async Task Init1()
+    {
+        await _firebaseStoreService.GetCurrentUserName1();
     }
 }

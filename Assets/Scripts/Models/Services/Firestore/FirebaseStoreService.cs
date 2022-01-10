@@ -1,6 +1,7 @@
 ﻿using Firebase.Extensions;
 using Firebase.Firestore;
 using UnityEngine;
+using System.Threading.Tasks;
 using System;
 using UniRx;
 
@@ -27,6 +28,19 @@ public class FirebaseStoreService : IFirebaseStoreService
                 _eventDispatcher.Dispatch(new UserNameEvent(currentUserName));
             }
         });
+    }
+    public async Task GetCurrentUserName1()
+    {
+        string currentUserName = "Default";
+        FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
+        DocumentReference usersRef = db.Collection("users").Document(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+
+        DocumentSnapshot snapshot = await usersRef.GetSnapshotAsync();
+        if (snapshot.Exists)
+        {
+            currentUserName = snapshot.GetValue<string>("Name");
+            _eventDispatcher.Dispatch(new UserNameEvent(currentUserName));
+        }
     }
 
     public void StoreNewUserName(string newUserName)

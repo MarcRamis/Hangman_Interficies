@@ -1,4 +1,5 @@
-﻿public class LoadInitialDataUseCase
+﻿using System.Threading.Tasks;
+public class LoadInitialDataUseCase
 {
     private readonly SceneLoader _sceneLoader;
 
@@ -6,7 +7,7 @@
     {
         _sceneLoader = sceneLoader;
     }
-    public async void Init()
+    public async Task Init()
     {
         await _sceneLoader.Load("Menu");
     }

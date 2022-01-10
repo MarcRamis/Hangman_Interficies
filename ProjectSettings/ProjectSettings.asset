@@ -238,8 +238,8 @@ PlayerSettings:
   AndroidTargetArchitectures: 1
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: "C:/Users/alex/Documents/Universidad/Tercer A\xF1o/Interficies/Save-Keys/user.keystore"
-  AndroidKeyaliasName: alex
+  AndroidKeystoreName: '{inproject}: Assets/KeysPubl/user.keystore'
+  AndroidKeyaliasName: 123456
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
@@ -663,8 +663,8 @@ PlayerSettings:
     Android: 3
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: 2D_BuiltInRenderer
-  metroPackageVersion: 
+  metroPackageName: 2DBuiltInRenderer
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -672,7 +672,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: 2D_BuiltInRenderer
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: aa3
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
