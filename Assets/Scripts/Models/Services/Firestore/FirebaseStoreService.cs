@@ -35,15 +35,12 @@ public class FirebaseStoreService : IFirebaseStoreService
         FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
         DocumentReference usersRef = db.Collection("users").Document(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
 
-        await usersRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+        DocumentSnapshot snapshot = await usersRef.GetSnapshotAsync();
+        if (snapshot.Exists)
         {
-            DocumentSnapshot snapshot = task.Result;
-            if (snapshot.Exists)
-            {
-                currentUserName = snapshot.GetValue<string>("Name");
-                _eventDispatcher.Dispatch(new UserNameEvent(currentUserName));
-            }
-        });
+            currentUserName = snapshot.GetValue<string>("Name");
+            _eventDispatcher.Dispatch(new UserNameEvent(currentUserName));
+        }
     }
 
     public void StoreNewUserName(string newUserName)

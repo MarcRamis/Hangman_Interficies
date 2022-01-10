@@ -35,32 +35,22 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
                     _eventDispatcher.Dispatch<ScoreUserPrefs>(scoreUser);
                 }
             }
-
         });
     }
     public async Task ReadDataBase1()
     {
-       await FirebaseDatabase.DefaultInstance.GetReference("users")
-            .GetValueAsync().ContinueWithOnMainThread(task =>
-            {
-                if (task.IsFaulted) { }
-                else if (task.IsCompleted)
-                {
-                    DataSnapshot snapshot = task.Result;
-                    foreach (DataSnapshot user in snapshot.Children)
-                    {
-                        IDictionary dictUser = (IDictionary)user.Value;
+        DataSnapshot snapshot = await FirebaseDatabase.DefaultInstance.GetReference("users").GetValueAsync();
+        foreach (DataSnapshot user in snapshot.Children)
+        {
+            IDictionary dictUser = (IDictionary)user.Value;
 
-                        var scoreUser = new ScoreUserPrefs(dictUser["Username"].ToString(),
-                            int.Parse(dictUser["Position"].ToString()),
-                            int.Parse(dictUser["Score"].ToString()),
-                            float.Parse(dictUser["Timer"].ToString()));
+            var scoreUser = new ScoreUserPrefs(dictUser["Username"].ToString(),
+                int.Parse(dictUser["Position"].ToString()),
+                int.Parse(dictUser["Score"].ToString()),
+                float.Parse(dictUser["Timer"].ToString()));
 
-                        _eventDispatcher.Dispatch<ScoreUserPrefs>(scoreUser);
-                    }
-                }
-
-            });
+            _eventDispatcher.Dispatch<ScoreUserPrefs>(scoreUser);
+        }
     }
     public void OrderedListByScore()
     {

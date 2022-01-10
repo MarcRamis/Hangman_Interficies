@@ -60,16 +60,9 @@ public class MenuInstaller : MonoBehaviour
 
     private async void Start()
     {
-        //StartCoroutine(_firebaseLogService.Init(0.5f));
         await _firebaseLogService.Init3();
-
-        //StartCoroutine(_loadAllScoreUsersUseCase.GetAll(1.0f));
         await _loadAllScoreUsersUseCase.GetAll();
-
-        //StartCoroutine(_editNameUseCase.Init(1.0f));
         await _editNameUseCase.Init1();
-
-        //StartCoroutine(_sendMessageUseCase.Init(1.0f));
         await _sendMessageUseCase.Init1();
     }
 

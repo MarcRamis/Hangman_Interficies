@@ -26,35 +26,31 @@ public class FirebaseLogService : IFirebaseLogService
 
     public async Task Init3()
     {
-        await Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
+        var dependencyStatus = await Firebase.FirebaseApp.CheckAndFixDependenciesAsync();
+
+        if (dependencyStatus == Firebase.DependencyStatus.Available)
         {
+            var app = Firebase.FirebaseApp.DefaultInstance;
+        }
+        else
+        {
+            UnityEngine.Debug.LogError(System.String.Format("Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+            return;
+        }
 
-            var dependencyStatus = task.Result;
-            if (dependencyStatus == Firebase.DependencyStatus.Available)
-            {
-
-                var app = Firebase.FirebaseApp.DefaultInstance;
-            }
-            else
-            {
-                UnityEngine.Debug.LogError(System.String.Format("Could not resolve all Firebase dependencies: {0}", dependencyStatus));
-                return;
-            }
-
-            eventDispatcher.Dispatch(new LoggedEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null));
-        });
+        eventDispatcher.Dispatch(new LoggedEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null));
     }
 
     public void Init()
     {
-        
+
         Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
         {
-            
+
             var dependencyStatus = task.Result;
             if (dependencyStatus == Firebase.DependencyStatus.Available)
             {
-                
+
                 var app = Firebase.FirebaseApp.DefaultInstance;
             }
             else
@@ -71,7 +67,7 @@ public class FirebaseLogService : IFirebaseLogService
         yield return new WaitForSeconds(time);
         Init();
     }
-    
+
 
     public void LogAnonym()
     {
@@ -85,7 +81,7 @@ public class FirebaseLogService : IFirebaseLogService
 
             Firebase.Auth.FirebaseUser newUser = task.Result;
             Debug.Log("Usuario anonimo creado");
-            
+
             SetDefaultData();
             eventDispatcher.Dispatch(new LogEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId));
         });
@@ -94,7 +90,8 @@ public class FirebaseLogService : IFirebaseLogService
     public void LogEmail(UserNameLog userNameLog)
     {
         Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
-        auth.SignInWithEmailAndPasswordAsync(userNameLog.Email, userNameLog.Password).ContinueWithOnMainThread(task => {
+        auth.SignInWithEmailAndPasswordAsync(userNameLog.Email, userNameLog.Password).ContinueWithOnMainThread(task =>
+        {
             if (task.IsCanceled)
             {
                 Debug.LogError("SignInWithEmailAndPasswordAsync was canceled.");
@@ -105,7 +102,7 @@ public class FirebaseLogService : IFirebaseLogService
                 Debug.LogError("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
                 return;
             }
-            
+
             Firebase.Auth.FirebaseUser newUser = task.Result;
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
@@ -122,15 +119,16 @@ public class FirebaseLogService : IFirebaseLogService
     {
         Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
         auth.SignOut();
-        
+
         DeleteUserName();
     }
 
     public void RegisterEmail(UserNameLog userNameLog)
     {
         Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
-        
-        auth.CreateUserWithEmailAndPasswordAsync(userNameLog.Email, userNameLog.Password).ContinueWithOnMainThread(task => {
+
+        auth.CreateUserWithEmailAndPasswordAsync(userNameLog.Email, userNameLog.Password).ContinueWithOnMainThread(task =>
+        {
             if (task.IsCanceled)
             {
                 Debug.LogError("CreateUserWithEmailAndPasswordAsync was canceled.");
@@ -193,7 +191,7 @@ public class FirebaseLogService : IFirebaseLogService
     private UserNameLog ReadUserName()
     {
         var userNameLog = new UserNameLog(
-            EncryptedPlayerPrefs.GetString(_emailKey, "default"), 
+            EncryptedPlayerPrefs.GetString(_emailKey, "default"),
             EncryptedPlayerPrefs.GetString(_passwordKey, "default"));
 
         return userNameLog;
