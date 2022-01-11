@@ -23,7 +23,7 @@ public class InitInstaller : MonoBehaviour
         var sceneHandlerService = new UnitySceneHandler();
         //var userRepository = new UserRepository();
 
-        ServiceLocator.Instance.RegisterService<SceneHandlerService>(sceneHandlerService);
+        //ServiceLocator.Instance.RegisterService<SceneHandlerService>(sceneHandlerService);
         //ServiceLocator.Instance.RegisterService<UserDataAccess>(userRepository);
 
         var eventDispatcher = new EventDispatcherService();
