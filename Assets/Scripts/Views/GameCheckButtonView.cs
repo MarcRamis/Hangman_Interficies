@@ -22,6 +22,11 @@ public class GameCheckButtonView : View
             _checkButtonText.text = letter;
         }).AddTo(_disposables);
 
+        _viewModel.CheckButtonImage.Subscribe((checkedImage) =>
+        {
+            _checkButtonImage.sprite = checkedImage;
+        }).AddTo(_disposables);
+
         _checkButton.onClick.AddListener(() =>
         {
             _viewModel.CheckButtonPressed.Execute();

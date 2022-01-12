@@ -11,7 +11,7 @@ public class GameCheckButtonController : Controller
         _updateGameUseCase = updateGameUseCase;
 
         _viewModel.CheckButtonPressed.Subscribe((_) => {
-            _updateGameUseCase.ButtonChecked(_viewModel.CheckButtonText.Value); 
+            _updateGameUseCase.ButtonChecked(_viewModel.CheckButtonText.Value);
         });
     }
 }
