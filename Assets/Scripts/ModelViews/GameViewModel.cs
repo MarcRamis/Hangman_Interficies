@@ -8,7 +8,7 @@ public class GameViewModel : ViewModel
     public readonly ReactiveProperty<string> HangmanRandomNameText;
     
     public readonly ReactiveCollection<GameCheckButtonViewModel> CheckButton;
-
+    
     public GameViewModel()
     {
         LoadGameRectIsVisible = new ReactiveProperty<bool>().AddTo(_disposables);

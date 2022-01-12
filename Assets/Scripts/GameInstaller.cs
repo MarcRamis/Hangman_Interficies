@@ -6,7 +6,7 @@ using UniRx;
 public class GameInstaller : MonoBehaviour
 {
     [SerializeField] private RectTransform _canvasParent;
-    
+
     [SerializeField] private GameView _gamePrefab;
 
     private List<IDisposable> _disposables = new List<IDisposable>();
@@ -15,17 +15,20 @@ public class GameInstaller : MonoBehaviour
     private void Awake()
     {
         var gameView = Instantiate(_gamePrefab, _canvasParent);
-        
+
+
         var gameViewModel = new GameViewModel().AddTo(_disposables);
-        gameView.SetViewModel(gameViewModel);
 
         var eventDispatcher = new EventDispatcherService();
         var hangmanService = new HangmanAPIService(eventDispatcher);
-        
+        var updateGameUseCase = new UpdateGameUseCase(eventDispatcher, hangmanService);
+
+        gameView.SetViewModel(gameViewModel, updateGameUseCase, eventDispatcher);
+
         _startGameUseCase = new StartGameUseCase(eventDispatcher, hangmanService);
 
         new GameController(gameViewModel).AddTo(_disposables);
-        new GamePresenter(gameViewModel,eventDispatcher).AddTo(_disposables);
+        new GamePresenter(gameViewModel, eventDispatcher).AddTo(_disposables);
     }
 
     private async void Start()

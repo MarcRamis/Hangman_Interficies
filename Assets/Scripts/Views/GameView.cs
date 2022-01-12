@@ -14,10 +14,14 @@ public class GameView : View
     [SerializeField] private GameCheckButtonView _checkButtonViewPrefab;
     [SerializeField] private RectTransform _checkButtonContainer;
     private List<GameCheckButtonView> _instantiatedGameCheckButtons;
+    private IUpdateGameUseCase _updateGame;
+    private IEventDispatcherService _eventDispatcher;
 
-    public void SetViewModel(GameViewModel viewModel)
+    public void SetViewModel(GameViewModel viewModel, IUpdateGameUseCase updateGame, IEventDispatcherService eventDispatcher)
     {
         _viewModel = viewModel;
+        _updateGame = updateGame;
+        _eventDispatcher = eventDispatcher;
 
         _instantiatedGameCheckButtons = new List<GameCheckButtonView>();
         _viewModel.CheckButton.ObserveAdd().Subscribe(InstantiateCheckButtons).AddTo(_disposables);
@@ -36,13 +40,16 @@ public class GameView : View
         {
             _hangmanText.text = randomName;
         }).AddTo(_disposables);
-
     }
+
     private void InstantiateCheckButtons(CollectionAddEvent<GameCheckButtonViewModel> gameCheckButtonViewModel)
     {
         var gameCheckButtonsView = Instantiate(_checkButtonViewPrefab, _checkButtonContainer);
         gameCheckButtonsView.SetViewModel(gameCheckButtonViewModel.Value);
         
+        new GameCheckButtonController(gameCheckButtonViewModel.Value, _updateGame);
+        new GameCheckButtonPresenter(gameCheckButtonViewModel.Value, _eventDispatcher);
+
         _instantiatedGameCheckButtons.Add(gameCheckButtonsView);
     }
 }
