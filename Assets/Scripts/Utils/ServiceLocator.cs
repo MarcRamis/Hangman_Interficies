@@ -8,6 +8,7 @@ public class ServiceLocator
     private static ServiceLocator _instance;
 
     private readonly Dictionary<Type, object> _services;
+    public Repository playerInfo = new Repository();
 
     private ServiceLocator()
     {

@@ -12,7 +12,7 @@ public class MenuInstaller : MonoBehaviour
     [SerializeField] private ConfigView _configPrefab;
     [SerializeField] private ButtonsView _buttonsPrefab;
 
-    FirebaseLogService _firebaseLogService;
+    IFirebaseLogService _firebaseLogService;
     LoadAllScoreUsersUseCase _loadAllScoreUsersUseCase;
     SendMessageUseCase _sendMessageUseCase;
     EditNameUseCase _editNameUseCase;
@@ -37,12 +37,13 @@ public class MenuInstaller : MonoBehaviour
         buttonsView.SetViewModel(buttonsViewModel);
 
         var eventDispatcherService = new EventDispatcherService();
-        var firebaseStoreService = new FirebaseStoreService(eventDispatcherService);
+        //var firebaseStoreService = new FirebaseStoreService(eventDispatcherService);
         var firebaseRealtimeDatabaseService = new FirebaseRealtimeDatabaseService(eventDispatcherService);
-        _firebaseLogService = new FirebaseLogService(eventDispatcherService);
+        _firebaseLogService = ServiceLocator.Instance.GetService<IFirebaseLogService>();
+        //_firebaseLogService = new FirebaseStoreService(eventDispatcherService);
         var firebaseMessageService = new FireBaseMessageService(eventDispatcherService);
 
-        _editNameUseCase = new EditNameUseCase(firebaseStoreService, eventDispatcherService);
+        _editNameUseCase = new EditNameUseCase(ServiceLocator.Instance.GetService<IFirebaseStoreService>(), eventDispatcherService);
         var createAccountUseCase = new CreateAccountUseCase(eventDispatcherService, _firebaseLogService);
         var loginUseCase = new LoginUseCase(_firebaseLogService, eventDispatcherService).AddTo(_disposables);
         var logoutUseCase = new LogoutUseCase(eventDispatcherService, _firebaseLogService);
@@ -60,9 +61,10 @@ public class MenuInstaller : MonoBehaviour
 
     private async void Start()
     {
-        await _firebaseLogService.Init3();
+        //await _firebaseLogService.Init3();
         await _loadAllScoreUsersUseCase.GetAll();
-        await _editNameUseCase.Init1();
+        //await _editNameUseCase.Init1();
+        _editNameUseCase.LoadUserName();
         await _sendMessageUseCase.Init1();
     }
 

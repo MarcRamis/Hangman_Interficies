@@ -12,6 +12,7 @@ public class LoginUseCase : ILoginUseCase, IDisposable
         _eventDispatcherService = eventDispatcherService;
 
         _eventDispatcherService.Subscribe<LoggedEvent>(AlreadyConnected);
+        //_eventDispatcherService.Subscribe<>
     }
 
     public void AlreadyConnected(LoggedEvent data)
@@ -22,11 +23,17 @@ public class LoginUseCase : ILoginUseCase, IDisposable
             {
                 LoginEmail(_firebaseLogService.GetCurrentUser());
             }
+            //Debug.Log("Entro en el if");
+            //Debug.Log("Current user: " + Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+            //ServiceLocator.Instance.playerInfo.SetUserID(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+            //_eventDispatcherService.Dispatch<CurrentNameEvent>();
+            LoginAnonym(); //Quitar esto a futuro
         }
         else
         {
             LoginAnonym();
         }
+        Debug.Log("Entro Aqui");
     }
 
     public void LoginEmail(UserNameLog userNameLog)

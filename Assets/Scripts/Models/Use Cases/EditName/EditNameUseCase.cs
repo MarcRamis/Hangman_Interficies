@@ -32,4 +32,10 @@ public class EditNameUseCase : IEditNameUseCase
     {
         await _firebaseStoreService.GetCurrentUserName1();
     }
+
+    public void LoadUserName()
+    {
+        Debug.Log("Name in menu: " + ServiceLocator.Instance.playerInfo.GetUserName());
+        _eventDispatcherService.Dispatch(new UserNameEvent(ServiceLocator.Instance.playerInfo.GetUserName()));
+    }
 }

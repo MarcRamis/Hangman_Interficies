@@ -39,6 +39,9 @@ public class FirebaseLogService : IFirebaseLogService
         }
 
         eventDispatcher.Dispatch(new LoggedEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null));
+        //await LogAnonym1();
+        //Debug.Log("Current user: " + Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+        //ServiceLocator.Instance.playerInfo.SetUserID(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
     }
 
     public void Init()
@@ -74,6 +77,7 @@ public class FirebaseLogService : IFirebaseLogService
         Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
         auth.SignInAnonymouslyAsync().ContinueWithOnMainThread(task =>
         {
+            
             if (task.IsCanceled || task.IsFaulted)
             {
                 return;
@@ -83,8 +87,29 @@ public class FirebaseLogService : IFirebaseLogService
             Debug.Log("Usuario anonimo creado");
 
             SetDefaultData();
-            eventDispatcher.Dispatch(new LogEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId));
+
+
+            //eventDispatcher.Dispatch(new LogEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId));
+
+
+            Debug.Log("Current user Z: " + Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+            ServiceLocator.Instance.playerInfo.SetUserID(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+            eventDispatcher.Dispatch<CurrentNameEvent>();
         });
+       
+
+        
+    }
+
+    public async Task LogAnonym1()
+    {
+        Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        var dependencyStatus = await auth.SignInAnonymouslyAsync();
+        Debug.Log("Usuario anonimo creado");
+        Debug.Log("Current user: " + Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+        ServiceLocator.Instance.playerInfo.SetUserID(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+        SetDefaultData();
+
     }
 
     public void LogEmail(UserNameLog userNameLog)
@@ -112,8 +137,11 @@ public class FirebaseLogService : IFirebaseLogService
                 SaveUserNameOnPlayerPrefs(userNameLog);
                 SetCurrentUser();
             }
-
+            Debug.Log("Current user: " + Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+            ServiceLocator.Instance.playerInfo.SetUserID(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+            eventDispatcher.Dispatch<CurrentNameEvent>();
         });
+        
     }
     public void Logout()
     {

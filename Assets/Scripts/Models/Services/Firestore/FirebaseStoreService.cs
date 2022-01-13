@@ -11,6 +11,8 @@ public class FirebaseStoreService : IFirebaseStoreService
     public FirebaseStoreService(IEventDispatcherService eventDispatcher)
     {
         _eventDispatcher = eventDispatcher;
+
+        _eventDispatcher.Subscribe<CurrentNameEvent>(GetCurrentUserName2);
     }
     
     public void GetCurrentUserName()
@@ -33,14 +35,35 @@ public class FirebaseStoreService : IFirebaseStoreService
     {
         string currentUserName = "Default";
         FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
-        DocumentReference usersRef = db.Collection("users").Document(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+        Debug.Log(ServiceLocator.Instance.playerInfo.GetUserID());
+        DocumentReference usersRef = db.Collection("users").Document(ServiceLocator.Instance.playerInfo.GetUserID());
 
         DocumentSnapshot snapshot = await usersRef.GetSnapshotAsync();
         if (snapshot.Exists)
         {
             currentUserName = snapshot.GetValue<string>("Name");
-            _eventDispatcher.Dispatch(new UserNameEvent(currentUserName));
+            ServiceLocator.Instance.playerInfo.SetUserName(currentUserName);
+            //_eventDispatcher.Dispatch(new UserNameEvent(currentUserName));
         }
+    }
+
+    public void GetCurrentUserName2(CurrentNameEvent _)
+    {
+        string currentUserName = "Default";
+        FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
+        Debug.Log("User name in current user name: " + ServiceLocator.Instance.playerInfo.GetUserID());
+        DocumentReference usersRef = db.Collection("users").Document(ServiceLocator.Instance.playerInfo.GetUserID());
+
+        usersRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+        {
+            DocumentSnapshot snapshot = task.Result;
+            if (snapshot.Exists)
+            {
+                currentUserName = snapshot.GetValue<string>("Name");
+                Debug.Log("Name: " + currentUserName);
+                ServiceLocator.Instance.playerInfo.SetUserName(currentUserName);
+            }
+        });
     }
 
     public void StoreNewUserName(string newUserName)
@@ -74,4 +97,5 @@ public class FirebaseStoreService : IFirebaseStoreService
             }
         });
     }
+
 }
