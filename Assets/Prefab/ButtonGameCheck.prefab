@@ -271,5 +271,6 @@ MonoBehaviour:
   _checkButton: {fileID: 163527110622456410}
   _checkButtonText: {fileID: 163527110439816969}
   _checkButtonImage: {fileID: 163527110622456409}
+  _noCheckButtonSprite: {fileID: 21300000, guid: f2f9fb17b7726b14fbeadf9ddb9e4c9e, type: 3}
   _correctButtonSprite: {fileID: 21300000, guid: feb25afb5835700419b866859a2b560a, type: 3}
   _incorrectButtonSprite: {fileID: 21300000, guid: 21ba8b2ff9322cd40b4b63d8550855dc, type: 3}

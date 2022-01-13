@@ -1,4 +1,4 @@
 ﻿public interface IUpdateGameUseCase
 {
-    void ButtonChecked(string letter);
+    void CheckButton(string letter);
 }

@@ -58,13 +58,13 @@ public class HangmanAPIService : IHangmanAPIService
         if (response.correct)
         {
             _correctLetters.Append($" {letter}");
-            _eventDispatcher.Dispatch(new ButtonCheckedEvent(true));
+            _eventDispatcher.Dispatch(new ButtonCheckedEvent(true, letter));
             Debug.Log(_correctLetters.ToString());
         }
         else
         {
             _incorrectLetters.Append($" {letter}");
-            _eventDispatcher.Dispatch(new ButtonCheckedEvent(false));// poner en rojo la box con un dispatcher
+            _eventDispatcher.Dispatch(new ButtonCheckedEvent(false, letter));// poner en rojo la box con un dispatcher
             Debug.Log(_incorrectLetters.ToString());
         }
 

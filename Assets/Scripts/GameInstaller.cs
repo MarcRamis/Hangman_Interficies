@@ -16,7 +16,6 @@ public class GameInstaller : MonoBehaviour
     {
         var gameView = Instantiate(_gamePrefab, _canvasParent);
 
-
         var gameViewModel = new GameViewModel().AddTo(_disposables);
 
         var eventDispatcher = new EventDispatcherService();

@@ -10,7 +10,7 @@ public class UpdateGameUseCase : IUpdateGameUseCase
         _hangmanAPI = hangmanAPI;
     }
 
-    public void ButtonChecked(string letter)
+    public void CheckButton(string letter)
     {
         _hangmanAPI.GuessLetter(letter);
     }

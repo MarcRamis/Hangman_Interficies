@@ -15,13 +15,16 @@ public class GameCheckButtonPresenter : Presenter
 
     private void CheckButtonSolution(ButtonCheckedEvent data)
     {
-        if (data.isCorrect)
+        if(data.letterID == _viewModel.CheckButtonText.Value)
         {
-            _viewModel.CheckButtonImage.Value = _viewModel.CorrectLetter.Value;
-        }
-        else
-        {
-            _viewModel.CheckButtonImage.Value = _viewModel.IncorrectLetter.Value;
+            if (data.isCorrect)
+            {
+                _viewModel.CheckButtonImage.Value = _viewModel.CorrectLetter.Value;
+            }
+            else
+            {
+                _viewModel.CheckButtonImage.Value = _viewModel.IncorrectLetter.Value;
+            }
         }
     }
 }

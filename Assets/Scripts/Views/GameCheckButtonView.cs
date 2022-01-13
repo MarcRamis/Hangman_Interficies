@@ -9,6 +9,7 @@ public class GameCheckButtonView : View
     [SerializeField] private TMP_Text _checkButtonText;
     [SerializeField] private Image _checkButtonImage;
     
+    [SerializeField] private Sprite _noCheckButtonSprite;
     [SerializeField] private Sprite _correctButtonSprite;
     [SerializeField] private Sprite _incorrectButtonSprite;
     
@@ -33,6 +34,7 @@ public class GameCheckButtonView : View
         });
 
         // ESTO ESTÁ MAL FIJO
+        _viewModel.NoCheckButton.Value = _noCheckButtonSprite;
         _viewModel.CorrectLetter.Value = _correctButtonSprite;
         _viewModel.IncorrectLetter.Value = _incorrectButtonSprite;
     }
