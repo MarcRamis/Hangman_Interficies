@@ -23,6 +23,11 @@ public class ScoreView : View
         {
             GetComponent<RectTransform>().DOAnchorPos(position, 1f, true);
         }).AddTo(_disposables);
+
+        _viewModel.ClearList.Subscribe((_) =>
+        {
+            ClearScoreList();
+        }).AddTo(_disposables);
     }
 
     private void InstantiateScoreUser(CollectionAddEvent<ScoreUserItemViewModel> scoreUserItemViewModel)
@@ -31,5 +36,15 @@ public class ScoreView : View
         scoreUserItemView.SetViewModel(scoreUserItemViewModel.Value);
 
         _instantiatedScoreUserItems.Add(scoreUserItemView);
+    }
+
+    private void ClearScoreList()
+    {
+        _instantiatedScoreUserItems.Clear();
+        foreach (Transform child in _userItemContainer.gameObject.GetComponentInChildren<Transform>())
+        {
+            Destroy(child.transform.gameObject);
+        }
+        Debug.Log("Limpio");
     }
 }

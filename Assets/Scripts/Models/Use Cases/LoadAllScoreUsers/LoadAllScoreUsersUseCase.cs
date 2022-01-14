@@ -14,7 +14,8 @@ public class LoadAllScoreUsersUseCase : ILoadAllScoreUsersUseCase
 
     public async Task GetAll()
     {
-        await _firebaseRealtimeDatabaseService.ReadDataBase1();
+        //await _firebaseRealtimeDatabaseService.ReadDataBase1();
+        await _firebaseRealtimeDatabaseService.OrderedListByScoreByTask();
     }
 
     public IEnumerator GetAll(float time)
