@@ -8,5 +8,6 @@
 
         _gameViewModel.LoadGameRectIsVisible.Value = true;
         _gameViewModel.TotalLives.Value = 7;
+        _gameViewModel.TotalScore.Value = 0;
     }
 }

@@ -19,6 +19,8 @@ public class GameViewModel : ViewModel
     public readonly ReactiveProperty<bool> Live7Visible;
     
     public readonly ReactiveProperty<int> TotalLives;
+    public readonly ReactiveProperty<int> TotalScore;
+    public readonly ReactiveProperty<int> CurrentCorrectLeters;
 
     public GameViewModel()
     {
@@ -35,7 +37,8 @@ public class GameViewModel : ViewModel
         Live5Visible = new ReactiveProperty<bool>().AddTo(_disposables);
         Live6Visible = new ReactiveProperty<bool>().AddTo(_disposables);
         Live7Visible = new ReactiveProperty<bool>().AddTo(_disposables);
-
+        
         TotalLives = new ReactiveProperty<int>().AddTo(_disposables);
+        TotalScore = new ReactiveProperty<int>().AddTo(_disposables);
     }
 }

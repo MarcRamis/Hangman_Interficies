@@ -14,6 +14,7 @@ public class GamePresenter : Presenter
         _eventDispatcher.Subscribe<LoadScreenEvent>(ShowGame);
         _eventDispatcher.Subscribe<CheckButtonPrefs>(SetCheckButtons);
         _eventDispatcher.Subscribe<VaryLiveEvent>(ChangeLive);
+        _eventDispatcher.Subscribe<VaryScoreEvent>(ChangeScore);
     }
 
     private void SetHangmanText(HangmanRandomNameEvent name)
@@ -43,6 +44,10 @@ public class GamePresenter : Presenter
         else if (totalLives < 4) { _viewModel.Live4Visible.Value = true; }
         else if (totalLives < 5) { _viewModel.Live3Visible.Value = true; }
         else if (totalLives < 6) { _viewModel.Live2Visible.Value = true; }
-        else if (totalLives < 7) { _viewModel.Live1Visible.Value = true; }
+        else if (totalLives < 7) { _viewModel.Live1Visible.Value = true; } // This means player has lost.
+    }
+    private void ChangeScore(VaryScoreEvent data)
+    {
+        //_viewModel.TotalScore.Value += data.
     }
 }
