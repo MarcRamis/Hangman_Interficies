@@ -24,6 +24,7 @@ public class GameCheckButtonPresenter : Presenter
             else
             {
                 _viewModel.CheckButtonImage.Value = _viewModel.IncorrectLetter.Value;
+                _eventDispatcher.Dispatch(new VaryLiveEvent(-1));
             }
         }
     }

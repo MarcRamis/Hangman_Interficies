@@ -31,11 +31,11 @@ public class GameCheckButtonView : View
         _checkButton.onClick.AddListener(() =>
         {
             _viewModel.CheckButtonPressed.Execute();
+            _checkButton.interactable = false;
         });
 
-        // ESTO ESTÁ MAL FIJO
-        _viewModel.NoCheckButton.Value = _noCheckButtonSprite;
-        _viewModel.CorrectLetter.Value = _correctButtonSprite;
-        _viewModel.IncorrectLetter.Value = _incorrectButtonSprite;
+        _viewModel.NoCheckButton.SetValueAndForceNotify(_noCheckButtonSprite);
+        _viewModel.CorrectLetter.SetValueAndForceNotify(_correctButtonSprite);
+        _viewModel.IncorrectLetter.SetValueAndForceNotify(_incorrectButtonSprite);
     }
 }

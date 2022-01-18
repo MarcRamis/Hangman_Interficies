@@ -844,6 +844,15 @@ MonoBehaviour:
   _gameRect: {fileID: 170891268104153464}
   _checkButtonViewPrefab: {fileID: -5845051854414911172, guid: 1a9e4416641a8c24fa223608baf62994, type: 3}
   _checkButtonContainer: {fileID: 216217097599308186}
+  _lives:
+  - {fileID: 216217097700869622}
+  - {fileID: 216217097710304996}
+  - {fileID: 216217099682794142}
+  - {fileID: 216217098268609120}
+  - {fileID: 216217098474138092}
+  - {fileID: 216217098559746133}
+  - {fileID: 216217098650164480}
+  _totalLives: 7
 --- !u!1 &216217099268368209
 GameObject:
   m_ObjectHideFlags: 0

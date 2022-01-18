@@ -27,6 +27,8 @@ public class HangmanAPIService : IHangmanAPIService
         var response = await _restClientAdapter.Post<NewGameRequest, NewGameResponse>(EndPoints.NewGame, request);
         UpdateToken(response.token);
         _eventDispatcher.Dispatch(new HangmanRandomNameEvent(AddSpacesBetweenLetters(response.hangman)));
+
+        GetSolution();
     }
     
     public void GetButtonLetters()
@@ -64,7 +66,7 @@ public class HangmanAPIService : IHangmanAPIService
         else
         {
             _incorrectLetters.Append($" {letter}");
-            _eventDispatcher.Dispatch(new ButtonCheckedEvent(false, letter));// poner en rojo la box con un dispatcher
+            _eventDispatcher.Dispatch(new ButtonCheckedEvent(false, letter));
             Debug.Log(_incorrectLetters.ToString());
         }
 

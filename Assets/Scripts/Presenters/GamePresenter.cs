@@ -1,4 +1,6 @@
-﻿public class GamePresenter : Presenter
+﻿using UnityEngine;
+
+public class GamePresenter : Presenter
 {
     GameViewModel _viewModel;
     EventDispatcherService _eventDispatcher;
@@ -11,8 +13,9 @@
         _eventDispatcher.Subscribe<HangmanRandomNameEvent>(SetHangmanText);
         _eventDispatcher.Subscribe<LoadScreenEvent>(ShowGame);
         _eventDispatcher.Subscribe<CheckButtonPrefs>(SetCheckButtons);
+        _eventDispatcher.Subscribe<VaryLiveEvent>(ChangeLive);
     }
-    
+
     private void SetHangmanText(HangmanRandomNameEvent name)
     {
         _viewModel.HangmanRandomNameText.SetValueAndForceNotify(name.Text);
@@ -26,5 +29,20 @@
     {
         var gameCheckButtonsViewModel = new GameCheckButtonViewModel(data.letter);
         _viewModel.CheckButton.Add(gameCheckButtonsViewModel);
+    }
+    private void ChangeLive(VaryLiveEvent data)
+    {
+        _viewModel.TotalLives.Value += data._live;
+        Debug.Log(_viewModel.TotalLives.Value);
+
+        var totalLives = _viewModel.TotalLives.Value;
+
+        if (totalLives < 1) { _viewModel.Live7Visible.Value = true; }
+        else if (totalLives < 2) { _viewModel.Live6Visible.Value = true; }
+        else if (totalLives < 3) { _viewModel.Live5Visible.Value = true; }
+        else if (totalLives < 4) { _viewModel.Live4Visible.Value = true; }
+        else if (totalLives < 5) { _viewModel.Live3Visible.Value = true; }
+        else if (totalLives < 6) { _viewModel.Live2Visible.Value = true; }
+        else if (totalLives < 7) { _viewModel.Live1Visible.Value = true; }
     }
 }
