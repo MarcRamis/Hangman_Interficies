@@ -7,8 +7,8 @@ public class GameCheckButtonView : View
 {
     [SerializeField] private Button _checkButton;
     [SerializeField] private TMP_Text _checkButtonText;
-    [SerializeField] private Image _checkButtonImage;
     
+    [SerializeField] private Image _checkButtonImage;
     [SerializeField] private Sprite _noCheckButtonSprite;
     [SerializeField] private Sprite _correctButtonSprite;
     [SerializeField] private Sprite _incorrectButtonSprite;
@@ -31,8 +31,12 @@ public class GameCheckButtonView : View
         _checkButton.onClick.AddListener(() =>
         {
             _viewModel.CheckButtonPressed.Execute();
-            _checkButton.interactable = false;
         });
+
+        _viewModel.Interactable.Subscribe((interactable) =>
+        {
+            _checkButton.interactable = interactable;
+        }).AddTo(_disposables);
 
         _viewModel.NoCheckButton.SetValueAndForceNotify(_noCheckButtonSprite);
         _viewModel.CorrectLetter.SetValueAndForceNotify(_correctButtonSprite);

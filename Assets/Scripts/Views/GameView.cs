@@ -3,6 +3,7 @@ using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class GameView : View
 {
@@ -11,7 +12,8 @@ public class GameView : View
     [SerializeField] private TMP_Text _hangmanText;
     [SerializeField] private RectTransform _loadRect;
     [SerializeField] private RectTransform _gameRect;
-    
+    [SerializeField] private RectTransform _endRect;
+
     // Buttons
     [SerializeField] private GameCheckButtonView _checkButtonViewPrefab;
     [SerializeField] private RectTransform _checkButtonContainer;
@@ -21,6 +23,21 @@ public class GameView : View
 
     // Lives
     [SerializeField] private Image[] _lives;
+
+    // EndGame
+    [SerializeField] private Image _victoryImage;
+    [SerializeField] private Image _defeatImage;
+    [SerializeField] private Image _timeImage;
+    [SerializeField] private Image _scoreImage;
+    [SerializeField] private TMP_Text _endText;
+    [SerializeField] private TMP_Text _endTimeText;
+    [SerializeField] private TMP_Text _endScoreText;
+    [SerializeField] private TMP_Text _endMenuText;
+    [SerializeField] private TMP_Text _endPlayAgainText;
+    [SerializeField] private Button _endMenuButton;
+    [SerializeField] private Button _endContinueButton;
+
+    [SerializeField] private Image load_image;
 
     public void SetViewModel(GameViewModel viewModel, IUpdateGameUseCase updateGame, IEventDispatcherService eventDispatcher)
     {
@@ -41,12 +58,21 @@ public class GameView : View
             _gameRect.gameObject.SetActive(gameVisible);
         }).AddTo(_disposables);
 
+        _viewModel.EndRectIsVisible.Subscribe((gameVisible) =>
+        {
+            _endRect.gameObject.SetActive(gameVisible);
+        }).AddTo(_disposables);
+
+
         _viewModel.HangmanRandomNameText.Subscribe((randomName) =>
         {
             _hangmanText.text = randomName;
         }).AddTo(_disposables);
 
         OnSubscribeLives();
+        OnEndPanel();
+
+        InvokeRepeating("LoadAnimation", 0, 1.0f);
     }
 
     private void InstantiateCheckButtons(CollectionAddEvent<GameCheckButtonViewModel> gameCheckButtonViewModel)
@@ -96,5 +122,55 @@ public class GameView : View
             _lives[6].gameObject.SetActive(liveVisible);
         }).AddTo(_disposables);
 
+    }
+
+    private void OnEndPanel()
+    {
+        _viewModel.StateColor.Subscribe((color) =>
+        {
+            _endTimeText.color = color;
+            _endScoreText.color = color;
+            _endText.color = color;
+            _endMenuText.color = color;
+            _endPlayAgainText.color = color;
+            _timeImage.color = color;
+            _scoreImage.color = color;
+        }).AddTo(_disposables);
+
+        _viewModel.VictoryIsVisible.Subscribe((visible) =>
+        {
+            _victoryImage.gameObject.SetActive(visible);
+            _defeatImage.gameObject.SetActive(!visible);
+        }).AddTo(_disposables);
+
+        _viewModel.TitleText.Subscribe((titleText) =>
+        {
+            _endText.text = titleText;
+        }).AddTo(_disposables);
+
+        _viewModel.TimeText.Subscribe((timeText) =>
+        {
+            _endTimeText.text = timeText;
+        }).AddTo(_disposables);
+
+        _viewModel.ScoreText.Subscribe((scoreText) =>
+        {
+            _endScoreText.text = scoreText;
+        }).AddTo(_disposables);
+
+        _endMenuButton.onClick.AddListener(() =>
+        {
+            _viewModel.MenuButtonPressed.Execute();
+        });
+        
+        _endContinueButton.onClick.AddListener(() =>
+        {
+            _viewModel.ContinueButtonPressed.Execute();
+        });
+    }
+
+    private void LoadAnimation()
+    {
+        load_image.transform.DORotate(new Vector3(0, 0, -360), 1, RotateMode.WorldAxisAdd);
     }
 }

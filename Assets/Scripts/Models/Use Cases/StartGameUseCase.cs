@@ -10,7 +10,7 @@ public class StartGameUseCase
         _eventDispatcher = eventDispatcher;
         _hangmanAPIService = hangmanAPIService;
     }
-    
+
     public async Task StartGame()
     {
         await _hangmanAPIService.GetRandomLetter();

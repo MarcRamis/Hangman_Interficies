@@ -53,6 +53,11 @@ public class HangmanAPIService : IHangmanAPIService
 
         UpdateToken(response.token);
         SetGuessResponse(response, letter);
+        if (IsCompleted(response.hangman))
+        {
+            Debug.Log("Complete");
+            _eventDispatcher.Dispatch(new PlayerHasWonEvent());
+        }
     }
 
     private void SetGuessResponse(GuessLetterResponse response, string letter)
@@ -61,13 +66,12 @@ public class HangmanAPIService : IHangmanAPIService
         {
             _correctLetters.Append($" {letter}");
             _eventDispatcher.Dispatch(new ButtonCheckedEvent(true, letter));
-            Debug.Log(_correctLetters.ToString());
+            _eventDispatcher.Dispatch(new VaryScoreEvent(1));
         }
         else
         {
             _incorrectLetters.Append($" {letter}");
             _eventDispatcher.Dispatch(new ButtonCheckedEvent(false, letter));
-            Debug.Log(_incorrectLetters.ToString());
         }
 
         _eventDispatcher.Dispatch(new HangmanRandomNameEvent(AddSpacesBetweenLetters(response.hangman)));
@@ -91,5 +95,11 @@ public class HangmanAPIService : IHangmanAPIService
     private void UpdateToken(string token)
     {
         _token = token;
+    }
+
+    private bool IsCompleted(string hangman)
+    {
+        const string secretCharacter = "_";
+        return !hangman.Contains(secretCharacter);
     }
 }

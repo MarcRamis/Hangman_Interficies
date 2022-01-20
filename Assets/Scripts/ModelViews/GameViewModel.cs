@@ -7,6 +7,7 @@ public class GameViewModel : ViewModel
 {
     public readonly ReactiveProperty<bool> LoadGameRectIsVisible;
     public readonly ReactiveProperty<bool> GameRectIsVisible;
+    public readonly ReactiveProperty<bool> EndRectIsVisible;
     public readonly ReactiveProperty<string> HangmanRandomNameText;
     
     public readonly ReactiveCollection<GameCheckButtonViewModel> CheckButton;
@@ -22,10 +23,20 @@ public class GameViewModel : ViewModel
     public readonly ReactiveProperty<int> TotalScore;
     public readonly ReactiveProperty<int> CurrentCorrectLeters;
 
+    public readonly ReactiveProperty<Color> StateColor;
+    public readonly ReactiveProperty<bool> VictoryIsVisible;
+    public readonly ReactiveProperty<string> TitleText;
+    public readonly ReactiveProperty<string> TimeText;
+    public readonly ReactiveProperty<string> ScoreText;
+    public readonly ReactiveCommand MenuButtonPressed;
+    public readonly ReactiveCommand ContinueButtonPressed;
+    public readonly ReactiveProperty<bool> PlayerWin;
+
     public GameViewModel()
     {
         LoadGameRectIsVisible = new ReactiveProperty<bool>().AddTo(_disposables);
         GameRectIsVisible = new ReactiveProperty<bool>().AddTo(_disposables);
+        EndRectIsVisible = new ReactiveProperty<bool>().AddTo(_disposables);
         HangmanRandomNameText = new ReactiveProperty<string>().AddTo(_disposables);
         
         CheckButton = new ReactiveCollection<GameCheckButtonViewModel>().AddTo(_disposables);
@@ -40,5 +51,14 @@ public class GameViewModel : ViewModel
         
         TotalLives = new ReactiveProperty<int>().AddTo(_disposables);
         TotalScore = new ReactiveProperty<int>().AddTo(_disposables);
+
+        StateColor = new ReactiveProperty<Color>().AddTo(_disposables);
+        VictoryIsVisible = new ReactiveProperty<bool>().AddTo(_disposables);
+        TitleText = new ReactiveProperty<string>().AddTo(_disposables);
+        TimeText = new ReactiveProperty<string>().AddTo(_disposables);
+        ScoreText = new ReactiveProperty<string>().AddTo(_disposables);
+        MenuButtonPressed = new ReactiveCommand().AddTo(_disposables);
+        ContinueButtonPressed = new ReactiveCommand().AddTo(_disposables);
+        PlayerWin = new ReactiveProperty<bool>().AddTo(_disposables);
     }
 }
