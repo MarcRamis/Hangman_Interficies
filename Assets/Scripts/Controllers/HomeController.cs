@@ -5,15 +5,20 @@ public class HomeController : Controller
 {
     private readonly HomeViewModel _viewModel;
     private readonly IEditNameUseCase _editNameUseCase;
+    private readonly ISendAnalyticsEventsUseCase _sendAnalyticsUseCase;
 
-    public HomeController(HomeViewModel viewModel, IEditNameUseCase editNameUseCase)
+    public HomeController(HomeViewModel viewModel, IEditNameUseCase editNameUseCase, ISendAnalyticsEventsUseCase sendAnalyticsUseCase)
     {
         _viewModel = viewModel;
         _editNameUseCase = editNameUseCase;
+        _sendAnalyticsUseCase = sendAnalyticsUseCase;
 
         _viewModel.PlayButtonPressed.Subscribe((_) =>
         {
             Debug.Log("Go Play");
+
+            _sendAnalyticsUseCase.SendLevelStart(0);
+
         }).AddTo(_disposables);
 
         _viewModel.ProfileButtonPressed.Subscribe((_) =>
