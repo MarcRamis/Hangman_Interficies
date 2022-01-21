@@ -22,7 +22,7 @@ public class UpdateGameUseCase : IUpdateGameUseCase
     {
         if (!playerWin)
         {
-            _googleMobileAds.LoadReward();
+            await _googleMobileAds.LoadReward();
             _googleMobileAds.ShowRewardAd();
         }
 

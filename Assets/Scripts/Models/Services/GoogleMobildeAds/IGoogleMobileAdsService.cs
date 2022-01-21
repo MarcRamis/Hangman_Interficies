@@ -1,5 +1,7 @@
-﻿public interface IGoogleMobileAdsService
+﻿using System.Threading.Tasks;
+
+public interface IGoogleMobileAdsService
 {
-    void LoadReward();
+    Task LoadReward();
     void ShowRewardAd();
 }

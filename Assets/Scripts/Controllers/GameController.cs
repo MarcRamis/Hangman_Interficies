@@ -26,5 +26,27 @@ public class GameController : Controller
         {
             _updateGame.Reset(_viewModel.PlayerWin.Value);
         }).AddTo(_disposables);
+
+        _viewModel.PauseButtonPressed.Subscribe((_) =>
+        {
+            // Stop time
+            _viewModel.PauseRectIsVisible.Value = true;
+        }).AddTo(_disposables);
+
+        _viewModel.ResumeButtonPressed.Subscribe((_) =>
+        {
+            // Resume time
+            _viewModel.PauseRectIsVisible.Value = false;
+        }).AddTo(_disposables);
+
+        _viewModel.RestartButtonPressed.Subscribe((_) =>
+        {
+            _sceneLoader.Load("Game");
+        }).AddTo(_disposables);
+
+        _viewModel.HomeButtonPressed.Subscribe((_) =>
+        {
+            _sceneLoader.Load("Menu");
+        }).AddTo(_disposables);
     }
 }

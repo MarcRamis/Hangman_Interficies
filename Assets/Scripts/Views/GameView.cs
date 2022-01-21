@@ -4,6 +4,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
 
 public class GameView : View
 {
@@ -13,8 +14,11 @@ public class GameView : View
     [SerializeField] private RectTransform _loadRect;
     [SerializeField] private RectTransform _gameRect;
     [SerializeField] private RectTransform _endRect;
+    [SerializeField] private RectTransform _pauseRect;
 
-    // Buttons
+    [SerializeField] private Image load_image;
+    
+    // Letters
     [SerializeField] private GameCheckButtonView _checkButtonViewPrefab;
     [SerializeField] private RectTransform _checkButtonContainer;
     private List<GameCheckButtonView> _instantiatedGameCheckButtons;
@@ -37,7 +41,11 @@ public class GameView : View
     [SerializeField] private Button _endMenuButton;
     [SerializeField] private Button _endContinueButton;
 
-    [SerializeField] private Image load_image;
+    // Pause
+    [SerializeField] private Button _pauseButton;
+    [SerializeField] private Button _homeButton;
+    [SerializeField] private Button _resumeButton;
+    [SerializeField] private Button _restartButton;
 
     public void SetViewModel(GameViewModel viewModel, IUpdateGameUseCase updateGame, IEventDispatcherService eventDispatcher)
     {
@@ -63,6 +71,10 @@ public class GameView : View
             _endRect.gameObject.SetActive(gameVisible);
         }).AddTo(_disposables);
 
+        _viewModel.PauseRectIsVisible.Subscribe((gameVisible) =>
+        {
+            _pauseRect.gameObject.SetActive(gameVisible);
+        }).AddTo(_disposables);
 
         _viewModel.HangmanRandomNameText.Subscribe((randomName) =>
         {
@@ -71,8 +83,29 @@ public class GameView : View
 
         OnSubscribeLives();
         OnEndPanel();
+        OnPausePanel();
 
         InvokeRepeating("LoadAnimation", 0, 1.0f);
+    }
+
+    private void OnPausePanel()
+    {
+        _pauseButton.onClick.AddListener(() =>
+        {
+            _viewModel.PauseButtonPressed.Execute();
+        });
+        _homeButton.onClick.AddListener(() =>
+        {
+            _viewModel.HomeButtonPressed.Execute();
+        });
+        _restartButton.onClick.AddListener(() =>
+        {
+            _viewModel.RestartButtonPressed.Execute();
+        });
+        _resumeButton.onClick.AddListener(() =>
+        {
+            _viewModel.ResumeButtonPressed.Execute();
+        });
     }
 
     private void InstantiateCheckButtons(CollectionAddEvent<GameCheckButtonViewModel> gameCheckButtonViewModel)

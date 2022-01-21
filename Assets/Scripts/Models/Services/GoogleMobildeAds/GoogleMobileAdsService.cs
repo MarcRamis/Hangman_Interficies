@@ -8,14 +8,16 @@ public class GoogleMobileAdsService : IGoogleMobileAdsService
     private RewardedAd _rewardedAd;
     private string rewardID = "ca-app-pub-6749320954829314/5690333467";
 
-    public void LoadReward()
+    public async Task LoadReward()
     {
         MobileAds.Initialize(initStatus =>
         {
             LoadApp();
         });
+
+        await Task.Delay(TimeSpan.FromSeconds(1));
     }
-    public void ShowRewardAd()
+    public async void ShowRewardAd()
     {
         if (_rewardedAd.IsLoaded())
         {
@@ -23,7 +25,7 @@ public class GoogleMobileAdsService : IGoogleMobileAdsService
         }
         else
         {
-            LoadReward();
+            await LoadReward();
         }
     }
     

@@ -8,6 +8,7 @@ public class GameViewModel : ViewModel
     public readonly ReactiveProperty<bool> LoadGameRectIsVisible;
     public readonly ReactiveProperty<bool> GameRectIsVisible;
     public readonly ReactiveProperty<bool> EndRectIsVisible;
+    public readonly ReactiveProperty<bool> PauseRectIsVisible;
     public readonly ReactiveProperty<string> HangmanRandomNameText;
     
     public readonly ReactiveCollection<GameCheckButtonViewModel> CheckButton;
@@ -32,11 +33,17 @@ public class GameViewModel : ViewModel
     public readonly ReactiveCommand ContinueButtonPressed;
     public readonly ReactiveProperty<bool> PlayerWin;
 
+    public readonly ReactiveCommand PauseButtonPressed;
+    public readonly ReactiveCommand HomeButtonPressed;
+    public readonly ReactiveCommand RestartButtonPressed;
+    public readonly ReactiveCommand ResumeButtonPressed;
+
     public GameViewModel()
     {
         LoadGameRectIsVisible = new ReactiveProperty<bool>().AddTo(_disposables);
         GameRectIsVisible = new ReactiveProperty<bool>().AddTo(_disposables);
         EndRectIsVisible = new ReactiveProperty<bool>().AddTo(_disposables);
+        PauseRectIsVisible = new ReactiveProperty<bool>().AddTo(_disposables);
         HangmanRandomNameText = new ReactiveProperty<string>().AddTo(_disposables);
         
         CheckButton = new ReactiveCollection<GameCheckButtonViewModel>().AddTo(_disposables);
@@ -60,5 +67,10 @@ public class GameViewModel : ViewModel
         MenuButtonPressed = new ReactiveCommand().AddTo(_disposables);
         ContinueButtonPressed = new ReactiveCommand().AddTo(_disposables);
         PlayerWin = new ReactiveProperty<bool>().AddTo(_disposables);
+
+        PauseButtonPressed = new ReactiveCommand().AddTo(_disposables);
+        HomeButtonPressed = new ReactiveCommand().AddTo(_disposables);
+        RestartButtonPressed = new ReactiveCommand().AddTo(_disposables);
+        ResumeButtonPressed = new ReactiveCommand().AddTo(_disposables);
     }
 }
