@@ -113,5 +113,20 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
             _eventDispatcher.Dispatch<ScoreUserPrefs>(scoreUser);
         }
     }
+    
+    public async Task SaveScore(ScoreUserPrefs scoreUser)
+    {
+        DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+        
+        reference.Child("users").SetValueAsync("Adriaánasdjasoijf");
+    }
+    public async Task SaveUserID(UserEntity userID)
+    {
+        DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+    }
+    public async Task SaveUserName(ScoreUserPrefs userID)
+    {
+        DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+    }
 }
 

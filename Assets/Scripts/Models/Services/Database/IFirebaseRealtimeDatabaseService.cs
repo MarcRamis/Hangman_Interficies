@@ -7,4 +7,7 @@ public interface IFirebaseRealtimeDatabaseService
     Task ReadDataBase1();
     void OrderedListByScore();
     void OrderedListByPosition();
+    Task SaveScore(ScoreUserPrefs scoreUser);
+    Task SaveUserID(UserEntity user);
+    Task SaveUserName(ScoreUserPrefs scoreUser);
 }

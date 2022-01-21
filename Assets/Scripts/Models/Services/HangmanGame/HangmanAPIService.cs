@@ -55,7 +55,6 @@ public class HangmanAPIService : IHangmanAPIService
         SetGuessResponse(response, letter);
         if (IsCompleted(response.hangman))
         {
-            Debug.Log("Complete");
             _eventDispatcher.Dispatch(new PlayerHasWonEvent());
         }
     }

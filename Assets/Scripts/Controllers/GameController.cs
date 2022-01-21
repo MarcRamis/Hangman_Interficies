@@ -19,6 +19,7 @@ public class GameController : Controller
         _viewModel.MenuButtonPressed.Subscribe((_) =>
         {
             _sceneLoader.Load("Menu");
+            _updateGame.GoMenu();
         }).AddTo(_disposables);
 
         _viewModel.ContinueButtonPressed.Subscribe((_) =>
