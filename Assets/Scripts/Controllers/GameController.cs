@@ -24,14 +24,14 @@ public class GameController : Controller
         {
             _sceneLoader.Load("Menu");
             _updateGame.GoMenu(new ScoreUserPrefs(_viewModel.TotalScore.Value, _viewModel.TotalTime.Value));
-            Time.timeScale = 1;
+            //Time.timeScale = 1;
         }).AddTo(_disposables);
 
         _viewModel.ContinueButtonPressed.Subscribe((_) =>
         {
             _updateGame.Reset(_viewModel.PlayerWin.Value);
             _sendAnalyticsUseCase.SendLevelStart(_viewModel.TotalCorrectLeters.Value);
-            Time.timeScale = 1;
+            //Time.timeScale = 1;
         }).AddTo(_disposables);
 
         _viewModel.PauseButtonPressed.Subscribe((_) =>

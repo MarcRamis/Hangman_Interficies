@@ -22,7 +22,7 @@ public class GameViewModel : ViewModel
     
     public readonly ReactiveProperty<int> TotalLives;
     public readonly ReactiveProperty<int> TotalScore;
-    public readonly ReactiveProperty<float> TotalTime;
+    public readonly ReactiveProperty<int> TotalTime;
     public readonly ReactiveProperty<int> TotalCorrectLeters;
 
     public readonly ReactiveProperty<Color> StateColor;
@@ -60,7 +60,7 @@ public class GameViewModel : ViewModel
         
         TotalLives = new ReactiveProperty<int>().AddTo(_disposables);
         TotalScore = new ReactiveProperty<int>().AddTo(_disposables);
-        TotalTime = new ReactiveProperty<float>().AddTo(_disposables);
+        TotalTime = new ReactiveProperty<int>().AddTo(_disposables);
         TotalCorrectLeters = new ReactiveProperty<int>().AddTo(_disposables);
 
         StateColor = new ReactiveProperty<Color>().AddTo(_disposables);

@@ -30,7 +30,7 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
                     var scoreUser = new ScoreUserPrefs(dictUser["Username"].ToString(),
                         int.Parse(dictUser["Position"].ToString()),
                         int.Parse(dictUser["Score"].ToString()),
-                        float.Parse(dictUser["Timer"].ToString()));
+                        int.Parse(dictUser["Timer"].ToString()));
 
                     _eventDispatcher.Dispatch<ScoreUserPrefs>(scoreUser);
                 }
@@ -47,7 +47,7 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
             var scoreUser = new ScoreUserPrefs(dictUser["Username"].ToString(),
                 int.Parse(dictUser["Position"].ToString()),
                 int.Parse(dictUser["Score"].ToString()),
-                float.Parse(dictUser["Timer"].ToString()));
+                int.Parse(dictUser["Timer"].ToString()));
 
             _eventDispatcher.Dispatch<ScoreUserPrefs>(scoreUser);
         }
@@ -63,7 +63,7 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
     public async Task OrderedListByScoreByTask()
     {
         //Hacer un dispatch para pasar un bool al presenter de score
-        _eventDispatcher.Dispatch<DeleteScoreList>();
+        //_eventDispatcher.Dispatch<DeleteScoreList>();
         await FirebaseDatabase.DefaultInstance.GetReference("users").GetValueAsync();
         FirebaseDatabase.DefaultInstance.GetReference("users").OrderByChild("Score")
         .ValueChanged += HandleValueChangedByTask;
@@ -84,7 +84,7 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
             IDictionary dictUser = (IDictionary)user.Value;
 
 
-            ScoreUserPrefs myUser = new ScoreUserPrefs(dictUser["Username"].ToString(), i, int.Parse(dictUser["Score"].ToString()), float.Parse(dictUser["Timer"].ToString()));
+            ScoreUserPrefs myUser = new ScoreUserPrefs(dictUser["Username"].ToString(), i, int.Parse(dictUser["Score"].ToString()), int.Parse(dictUser["Timer"].ToString()));
             i--;
             string json = JsonUtility.ToJson(myUser);
             reference.Child("users").Child(user.Key).SetRawJsonValueAsync(json);
@@ -115,7 +115,7 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
             IDictionary dictUser = (IDictionary)user.Value;
 
 
-            ScoreUserPrefs myUser = new ScoreUserPrefs(dictUser["Username"].ToString(), i, int.Parse(dictUser["Score"].ToString()), float.Parse(dictUser["Timer"].ToString()));
+            ScoreUserPrefs myUser = new ScoreUserPrefs(dictUser["Username"].ToString(), i, int.Parse(dictUser["Score"].ToString()), int.Parse(dictUser["Timer"].ToString()));
             i--;
             string json = JsonUtility.ToJson(myUser);
             reference.Child("users").Child(user.Key).SetRawJsonValueAsync(json).GetAwaiter();
@@ -157,7 +157,7 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
             var scoreUser = new ScoreUserPrefs(dictUser["Username"].ToString(),
                 int.Parse(dictUser["Position"].ToString()),
                 int.Parse(dictUser["Score"].ToString()),
-                float.Parse(dictUser["Timer"].ToString()));
+                int.Parse(dictUser["Timer"].ToString()));
 
             _eventDispatcher.Dispatch<ScoreUserPrefs>(scoreUser);
         }
@@ -178,7 +178,7 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
             var scoreUser = new ScoreUserPrefs(dictUser["Username"].ToString(),
                 int.Parse(dictUser["Position"].ToString()),
                 int.Parse(dictUser["Score"].ToString()),
-                float.Parse(dictUser["Timer"].ToString()));
+                int.Parse(dictUser["Timer"].ToString()));
 
             _eventDispatcher.Dispatch<ScoreUserPrefs>(scoreUser);
         }
@@ -187,9 +187,9 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
     public void SaveScore(ScoreUserPrefs scoreUser)
     {
         DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
-        reference.Child("users").Child(ServiceLocator.Instance.playerInfo.GetUserID()).Child("Username").SetValueAsync(ServiceLocator.Instance.playerInfo.GetUserName());
-        reference.Child("users").Child(ServiceLocator.Instance.playerInfo.GetUserID()).Child("Timer").SetValueAsync(scoreUser.Timer);
-        reference.Child("users").Child(ServiceLocator.Instance.playerInfo.GetUserID()).Child("Score").SetValueAsync(scoreUser.Score);
-        reference.Child("users").Child(ServiceLocator.Instance.playerInfo.GetUserID()).Child("Position").SetValueAsync(0);
+        //reference.Child("users").Child(ServiceLocator.Instance.playerInfo.GetUserID()).Child("Username").SetValueAsync(ServiceLocator.Instance.playerInfo.GetUserName());
+        //reference.Child("users").Child(ServiceLocator.Instance.playerInfo.GetUserID()).Child("Timer").SetValueAsync(scoreUser.Timer);
+        //reference.Child("users").Child(ServiceLocator.Instance.playerInfo.GetUserID()).Child("Score").SetValueAsync(scoreUser.Score);
+        //reference.Child("users").Child(ServiceLocator.Instance.playerInfo.GetUserID()).Child("Position").SetValueAsync(0);
     }
 }

@@ -47,7 +47,7 @@ public class GameView : View
     [SerializeField] private Button _resumeButton;
     [SerializeField] private Button _restartButton;
 
-    private float time;
+    private float seconds;
 
     public void SetViewModel(GameViewModel viewModel, IUpdateGameUseCase updateGame, IEventDispatcherService eventDispatcher)
     {
@@ -214,7 +214,8 @@ public class GameView : View
     {
         if (!_loadRect.gameObject.active && !_endRect.gameObject.active && !_pauseRect.gameObject.active) // load screen, pause button, end button are my "stop timing"
         {
-            _viewModel.TotalTime.Value += Time.fixedDeltaTime;
+            seconds += Time.fixedDeltaTime;
+            _viewModel.TotalTime.Value = (int)seconds;
         }
     }
 }

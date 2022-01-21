@@ -24,7 +24,6 @@ public class UpdateGameUseCase : IUpdateGameUseCase
     {
         if (!playerWin)
         {
-            await _googleMobileAds.LoadReward();
             _googleMobileAds.ShowRewardAd();
             _sendAnalytic.ChooseNewChance(true);
             _sendAnalytic.ShowAd();

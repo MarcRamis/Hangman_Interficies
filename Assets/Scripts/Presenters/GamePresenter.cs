@@ -58,7 +58,7 @@ public class GamePresenter : Presenter
     {
         _viewModel.EndRectIsVisible.Value = true;
         _viewModel.TitleText.SetValueAndForceNotify("Defeat");
-        int time = (int)(_viewModel.TotalTime.Value);
+        int time = _viewModel.TotalTime.Value;
         _viewModel.TimeText.SetValueAndForceNotify((time.ToString()));
         _viewModel.StateColor.Value = new Color(237f / 255f, 33f / 255f, 124f / 255f);
         _viewModel.VictoryIsVisible.Value = false;
@@ -69,7 +69,7 @@ public class GamePresenter : Presenter
     {
         _viewModel.EndRectIsVisible.Value = true;
         _viewModel.TitleText.SetValueAndForceNotify("Victory");
-        int time = (int)(_viewModel.TotalTime.Value);
+        int time = _viewModel.TotalTime.Value;
         _viewModel.TimeText.SetValueAndForceNotify((time.ToString()));
         _viewModel.StateColor.Value = new Color(203f / 255f, 205f / 255f, 77f / 255f);
         _viewModel.VictoryIsVisible.Value = true;
@@ -93,5 +93,18 @@ public class GamePresenter : Presenter
         _viewModel.Live5Visible.Value = false;
         _viewModel.Live6Visible.Value = false;
         _viewModel.Live7Visible.Value = false;
+    }
+
+    public override void Dispose()
+    {
+        base.Dispose();
+        _eventDispatcher.Unsubscribe<HangmanRandomNameEvent>(SetHangmanText);
+        _eventDispatcher.Unsubscribe<LoadScreenEvent>(ShowGame);
+        _eventDispatcher.Unsubscribe<CheckButtonPrefs>(SetCheckButtons);
+        _eventDispatcher.Unsubscribe<VaryLiveEvent>(ChangeLive);
+        _eventDispatcher.Unsubscribe<VaryScoreEvent>(ChangeScore);
+        _eventDispatcher.Unsubscribe<PlayerHasWonEvent>(PlayerWins);
+        _eventDispatcher.Unsubscribe<PlayerHasLostEvent>(PlayerLoses);
+        _eventDispatcher.Unsubscribe<ResetEvent>(ResetGame);
     }
 }
