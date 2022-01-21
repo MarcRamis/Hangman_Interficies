@@ -5,15 +5,17 @@ public class HomeController : Controller
 {
     private readonly HomeViewModel _viewModel;
     private readonly IEditNameUseCase _editNameUseCase;
+    private readonly SceneLoader _sceneLoader;
 
-    public HomeController(HomeViewModel viewModel, IEditNameUseCase editNameUseCase)
+    public HomeController(HomeViewModel viewModel, IEditNameUseCase editNameUseCase, SceneLoader sceneLoader)
     {
         _viewModel = viewModel;
         _editNameUseCase = editNameUseCase;
-
+        _sceneLoader = sceneLoader;
+        
         _viewModel.PlayButtonPressed.Subscribe((_) =>
         {
-            Debug.Log("Go Play");
+            _sceneLoader.Load("Game");
         }).AddTo(_disposables);
 
         _viewModel.ProfileButtonPressed.Subscribe((_) =>

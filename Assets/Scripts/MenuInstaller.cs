@@ -41,14 +41,16 @@ public class MenuInstaller : MonoBehaviour
         var firebaseRealtimeDatabaseService = new FirebaseRealtimeDatabaseService(eventDispatcherService);
         _firebaseLogService = new FirebaseLogService(eventDispatcherService);
         var firebaseMessageService = new FireBaseMessageService(eventDispatcherService);
+        var sceneHandlerService = new UnitySceneHandler();
 
         _editNameUseCase = new EditNameUseCase(firebaseStoreService, eventDispatcherService);
         var createAccountUseCase = new CreateAccountUseCase(eventDispatcherService, _firebaseLogService);
         var loginUseCase = new LoginUseCase(_firebaseLogService, eventDispatcherService).AddTo(_disposables);
         var logoutUseCase = new LogoutUseCase(eventDispatcherService, _firebaseLogService);
         _sendMessageUseCase = new SendMessageUseCase(firebaseMessageService, eventDispatcherService);
+        var loadSceneUseCase = new LoadSceneUseCase(sceneHandlerService);
 
-        new HomeController(homeViewModel,_editNameUseCase).AddTo(_disposables);
+        new HomeController(homeViewModel,_editNameUseCase, loadSceneUseCase).AddTo(_disposables);
         new ConfigController(configViewModel, createAccountUseCase, loginUseCase, logoutUseCase, _sendMessageUseCase, _editNameUseCase).AddTo(_disposables);
         new ButtonsController(buttonsViewModel, homeViewModel, scoreViewModel, configViewModel).AddTo(_disposables);
 

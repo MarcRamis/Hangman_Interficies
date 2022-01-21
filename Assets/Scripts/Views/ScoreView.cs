@@ -5,11 +5,12 @@ using DG.Tweening;
 
 public class ScoreView : View
 {
-    [SerializeField] private ScoreUserItemView _userItemViewPrefab;
-    [SerializeField] private RectTransform _userItemContainer;
 
     private ScoreViewModel _viewModel;
 
+    
+    [SerializeField] private ScoreUserItemView _userItemViewPrefab;
+    [SerializeField] private RectTransform _userItemContainer;
     private List<ScoreUserItemView> _instantiatedScoreUserItems;
 
     public void SetViewModel(ScoreViewModel viewModel)
