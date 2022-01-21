@@ -8,7 +8,7 @@ public class HomeController : Controller
     private readonly SceneLoader _sceneLoader;
     private readonly ISendAnalyticsEventsUseCase _sendAnalyticsUseCase;
 
-    public HomeController(HomeViewModel viewModel, IEditNameUseCase editNameUseCase, ISendAnalyticsEventsUseCase sendAnalyticsUseCase)
+    public HomeController(HomeViewModel viewModel, IEditNameUseCase editNameUseCase, SceneLoader sceneLoader, ISendAnalyticsEventsUseCase sendAnalyticsUseCase)
     {
         _viewModel = viewModel;
         _editNameUseCase = editNameUseCase;

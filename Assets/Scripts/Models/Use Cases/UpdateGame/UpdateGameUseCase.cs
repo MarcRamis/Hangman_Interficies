@@ -5,12 +5,14 @@ public class UpdateGameUseCase : IUpdateGameUseCase
     IHangmanAPIService _hangmanAPI;
     IGoogleMobileAdsService _googleMobileAds;
     IFirebaseRealtimeDatabaseService _firebaseRealtime;
+    IAnalyticsEventsService _sendAnalytic;
 
-    public UpdateGameUseCase(IEventDispatcherService eventDispatcher, IHangmanAPIService hangmanAPI, IGoogleMobileAdsService googleMobileAds/*, IFirebaseRealtimeDatabaseService firebaseRealtime*/)
+    public UpdateGameUseCase(IEventDispatcherService eventDispatcher, IHangmanAPIService hangmanAPI, IGoogleMobileAdsService googleMobileAds, IAnalyticsEventsService sendAnalytic/*, IFirebaseRealtimeDatabaseService firebaseRealtime*/)
     {
         _eventDispatcher = eventDispatcher;
         _hangmanAPI = hangmanAPI;
         _googleMobileAds = googleMobileAds;
+        _sendAnalytic = sendAnalytic;
         /*_firebaseRealtime = firebaseRealtime;*/
     }
 
@@ -24,8 +26,11 @@ public class UpdateGameUseCase : IUpdateGameUseCase
         {
             await _googleMobileAds.LoadReward();
             _googleMobileAds.ShowRewardAd();
+            _sendAnalytic.ChooseNewChance(true);
+            _sendAnalytic.ShowAd();
         }
-
+        
+        _sendAnalytic.ChooseNewChance(false);
         _eventDispatcher.Dispatch<ResetEvent>();
         await _hangmanAPI.GetRandomLetter();
     }

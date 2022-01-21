@@ -5,12 +5,14 @@ public class GameController : Controller
     private readonly GameViewModel _viewModel;
     private readonly IUpdateGameUseCase _updateGame;
     private readonly SceneLoader _sceneLoader;
+    private readonly ISendAnalyticsEventsUseCase _sendAnalyticsUseCase;
 
-    public GameController(GameViewModel gameViewModel, IUpdateGameUseCase updateGame, SceneLoader sceneLoader)
+    public GameController(GameViewModel gameViewModel, IUpdateGameUseCase updateGame, SceneLoader sceneLoader, ISendAnalyticsEventsUseCase sendAnalyticsUseCase)
     {
         _viewModel = gameViewModel;
         _updateGame = updateGame;
         _sceneLoader = sceneLoader;
+        _sendAnalyticsUseCase = sendAnalyticsUseCase;
 
         _viewModel.LoadGameRectIsVisible.Value = true;
         _viewModel.TotalLives.Value = 7;
@@ -25,6 +27,7 @@ public class GameController : Controller
         _viewModel.ContinueButtonPressed.Subscribe((_) =>
         {
             _updateGame.Reset(_viewModel.PlayerWin.Value);
+            _sendAnalyticsUseCase.SendLevelStart(_viewModel.TotalCorrectLeters.Value);
         }).AddTo(_disposables);
 
         _viewModel.PauseButtonPressed.Subscribe((_) =>
@@ -42,6 +45,7 @@ public class GameController : Controller
         _viewModel.RestartButtonPressed.Subscribe((_) =>
         {
             _sceneLoader.Load("Game");
+            _sendAnalyticsUseCase.SendLevelStart(0);
         }).AddTo(_disposables);
 
         _viewModel.HomeButtonPressed.Subscribe((_) =>

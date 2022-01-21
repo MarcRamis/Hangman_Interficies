@@ -49,8 +49,9 @@ public class GamePresenter : Presenter
         else if (totalLives < 7) { _viewModel.Live1Visible.Value = true; } 
     }
     private void ChangeScore(VaryScoreEvent data)
-    {
+    {   
         _viewModel.TotalScore.Value += data._score * 100;
+        _viewModel.TotalCorrectLeters.Value += data._score;
     }
     private void PlayerLoses(PlayerHasLostEvent data)
     {

@@ -22,16 +22,18 @@ public class GameInstaller : MonoBehaviour
         var hangmanService = new HangmanAPIService(eventDispatcher);
         var sceneHandlerService = new UnitySceneHandler();
         var googleMobileAdsServoce = new GoogleMobileAdsService();
-        //var realtimeDatabase = new FirebaseRealtimeDatabaseService(eventDispatcher);
-        
-        var updateGameUseCase = new UpdateGameUseCase(eventDispatcher, hangmanService, googleMobileAdsServoce/*, realtimeDatabase*/);
+        var realtimeDatabase = new FirebaseRealtimeDatabaseService(eventDispatcher);
+        var analyticsEventsService = new AnalyticsEventsService(eventDispatcher);
+
+        var updateGameUseCase = new UpdateGameUseCase(eventDispatcher, hangmanService, googleMobileAdsServoce, analyticsEventsService/*, realtimeDatabase*/);
         var loadSceneUseCase = new LoadSceneUseCase(sceneHandlerService);
+        var analyticsEventUseCase = new SendAnalyticsEventsUseCase(analyticsEventsService, eventDispatcher);
 
         gameView.SetViewModel(gameViewModel, updateGameUseCase, eventDispatcher);
 
         _startGameUseCase = new StartGameUseCase(eventDispatcher, hangmanService);
 
-        new GameController(gameViewModel,updateGameUseCase,loadSceneUseCase).AddTo(_disposables);
+        new GameController(gameViewModel,updateGameUseCase,loadSceneUseCase, analyticsEventUseCase).AddTo(_disposables);
         new GamePresenter(gameViewModel, eventDispatcher).AddTo(_disposables);
     }
 
