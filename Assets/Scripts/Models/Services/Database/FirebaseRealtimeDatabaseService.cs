@@ -19,14 +19,14 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
         FirebaseDatabase.DefaultInstance.GetReference("users")
             .GetValueAsync().ContinueWithOnMainThread(task =>
         {
-            if (task.IsFaulted){}
+            if (task.IsFaulted) { }
             else if (task.IsCompleted)
             {
                 DataSnapshot snapshot = task.Result;
                 foreach (DataSnapshot user in snapshot.Children)
                 {
                     IDictionary dictUser = (IDictionary)user.Value;
-                    
+
                     var scoreUser = new ScoreUserPrefs(dictUser["Username"].ToString(),
                         int.Parse(dictUser["Position"].ToString()),
                         int.Parse(dictUser["Score"].ToString()),
@@ -88,7 +88,7 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
             i--;
             string json = JsonUtility.ToJson(myUser);
             reference.Child("users").Child(user.Key).SetRawJsonValueAsync(json);
-            
+
             //var scoreUser = new ScoreUserPrefs(dictUser["Username"].ToString(),
             //    int.Parse(dictUser["Position"].ToString()),
             //    int.Parse(dictUser["Score"].ToString()),
@@ -183,20 +183,13 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
             _eventDispatcher.Dispatch<ScoreUserPrefs>(scoreUser);
         }
     }
-    
-    public async Task SaveScore(ScoreUserPrefs scoreUser)
+
+    public void SaveScore(ScoreUserPrefs scoreUser)
     {
         DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
-        
-        //reference.Child("users").SetValueAsync("Adriaánasdjasoijf");
-    }
-    public async Task SaveUserID(UserEntity userID)
-    {
-        DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
-    }
-    public async Task SaveUserName(ScoreUserPrefs userID)
-    {
-        DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+        reference.Child("users").Child(ServiceLocator.Instance.playerInfo.GetUserID()).Child("Username").SetValueAsync(ServiceLocator.Instance.playerInfo.GetUserName());
+        reference.Child("users").Child(ServiceLocator.Instance.playerInfo.GetUserID()).Child("Timer").SetValueAsync(scoreUser.Timer);
+        reference.Child("users").Child(ServiceLocator.Instance.playerInfo.GetUserID()).Child("Score").SetValueAsync(scoreUser.Score);
+        reference.Child("users").Child(ServiceLocator.Instance.playerInfo.GetUserID()).Child("Position").SetValueAsync(0);
     }
 }
-

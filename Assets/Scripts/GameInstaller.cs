@@ -25,15 +25,15 @@ public class GameInstaller : MonoBehaviour
         var realtimeDatabase = new FirebaseRealtimeDatabaseService(eventDispatcher);
         var analyticsEventsService = new AnalyticsEventsService(eventDispatcher);
 
-        var updateGameUseCase = new UpdateGameUseCase(eventDispatcher, hangmanService, googleMobileAdsServoce, analyticsEventsService/*, realtimeDatabase*/);
+        var _updateGameUseCase = new UpdateGameUseCase(eventDispatcher, hangmanService, googleMobileAdsServoce, analyticsEventsService, realtimeDatabase);
         var loadSceneUseCase = new LoadSceneUseCase(sceneHandlerService);
         var analyticsEventUseCase = new SendAnalyticsEventsUseCase(analyticsEventsService, eventDispatcher);
 
-        gameView.SetViewModel(gameViewModel, updateGameUseCase, eventDispatcher);
+        gameView.SetViewModel(gameViewModel, _updateGameUseCase, eventDispatcher);
 
         _startGameUseCase = new StartGameUseCase(eventDispatcher, hangmanService);
 
-        new GameController(gameViewModel,updateGameUseCase,loadSceneUseCase, analyticsEventUseCase).AddTo(_disposables);
+        new GameController(gameViewModel, _updateGameUseCase, loadSceneUseCase, analyticsEventUseCase).AddTo(_disposables);
         new GamePresenter(gameViewModel, eventDispatcher).AddTo(_disposables);
     }
 

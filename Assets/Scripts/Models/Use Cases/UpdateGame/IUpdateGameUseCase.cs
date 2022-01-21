@@ -2,5 +2,6 @@
 {
     void CheckButton(string letter);
     void Reset(bool playerWin);
-    void GoMenu();
+    void GoMenu(ScoreUserPrefs scoreuser);
+    void UpdateTime(float delta);
 }

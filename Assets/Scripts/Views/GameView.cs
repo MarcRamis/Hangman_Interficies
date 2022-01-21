@@ -47,6 +47,8 @@ public class GameView : View
     [SerializeField] private Button _resumeButton;
     [SerializeField] private Button _restartButton;
 
+    private float time;
+
     public void SetViewModel(GameViewModel viewModel, IUpdateGameUseCase updateGame, IEventDispatcherService eventDispatcher)
     {
         _viewModel = viewModel;
@@ -87,6 +89,7 @@ public class GameView : View
 
         InvokeRepeating("LoadAnimation", 0, 1.0f);
     }
+
 
     private void OnPausePanel()
     {
@@ -205,5 +208,13 @@ public class GameView : View
     private void LoadAnimation()
     {
         load_image.transform.DORotate(new Vector3(0, 0, -360), 1, RotateMode.WorldAxisAdd);
+    }
+
+    private void FixedUpdate()
+    {
+        if (!_loadRect.gameObject.active && !_endRect.gameObject.active && !_pauseRect.gameObject.active) // load screen, pause button, end button are my "stop timing"
+        {
+            _viewModel.TotalTime.Value += Time.fixedDeltaTime;
+        }
     }
 }

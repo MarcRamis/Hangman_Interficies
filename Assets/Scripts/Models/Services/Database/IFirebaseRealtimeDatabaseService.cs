@@ -9,7 +9,5 @@ public interface IFirebaseRealtimeDatabaseService
     Task OrderedListByScoreByTask();
     void OrderedListByPosition();
     Task OrderedListByPositionByTask();
-    Task SaveScore(ScoreUserPrefs scoreUser);
-    Task SaveUserID(UserEntity user);
-    Task SaveUserName(ScoreUserPrefs scoreUser);
+    void SaveScore(ScoreUserPrefs scoreUser);
 }
