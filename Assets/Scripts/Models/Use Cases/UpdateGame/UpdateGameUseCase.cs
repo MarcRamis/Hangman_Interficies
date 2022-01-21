@@ -1,5 +1,6 @@
-﻿
-public class UpdateGameUseCase : IUpdateGameUseCase
+﻿using System;
+
+public class UpdateGameUseCase : IUpdateGameUseCase, IDisposable
 {
     IEventDispatcherService _eventDispatcher;
     IHangmanAPIService _hangmanAPI;
@@ -7,7 +8,8 @@ public class UpdateGameUseCase : IUpdateGameUseCase
     IFirebaseRealtimeDatabaseService _firebaseRealtime;
     IAnalyticsEventsService _sendAnalytic;
 
-    public UpdateGameUseCase(IEventDispatcherService eventDispatcher, IHangmanAPIService hangmanAPI, IGoogleMobileAdsService googleMobileAds, IAnalyticsEventsService sendAnalytic, IFirebaseRealtimeDatabaseService firebaseRealtime)
+    public UpdateGameUseCase(IEventDispatcherService eventDispatcher, IHangmanAPIService hangmanAPI, 
+        IGoogleMobileAdsService googleMobileAds, IAnalyticsEventsService sendAnalytic, IFirebaseRealtimeDatabaseService firebaseRealtime)
     {
         _eventDispatcher = eventDispatcher;
         _hangmanAPI = hangmanAPI;
@@ -37,8 +39,8 @@ public class UpdateGameUseCase : IUpdateGameUseCase
     {
         _firebaseRealtime.SaveScore(scoreuser);
     }
-    public void UpdateTime(float delta)
+    public void Dispose()
     {
-        
+
     }
 }

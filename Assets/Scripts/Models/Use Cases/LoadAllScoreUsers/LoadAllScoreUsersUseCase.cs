@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System.Threading.Tasks;
-public class LoadAllScoreUsersUseCase : ILoadAllScoreUsersUseCase
+using System;
+public class LoadAllScoreUsersUseCase : ILoadAllScoreUsersUseCase,IDisposable
 {
     private readonly IFirebaseRealtimeDatabaseService _firebaseRealtimeDatabaseService;
     private readonly IEventDispatcherService _eventDispatcherService;
@@ -22,5 +23,9 @@ public class LoadAllScoreUsersUseCase : ILoadAllScoreUsersUseCase
     {
         yield return new WaitForSeconds(time);
         _firebaseRealtimeDatabaseService.ReadDataBase();
+    }
+    public void Dispose()
+    {
+
     }
 }

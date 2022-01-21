@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-
-public class LoadSceneUseCase : SceneLoader
+using System;
+public class LoadSceneUseCase : SceneLoader, IDisposable
 {
     private readonly SceneHandlerService _sceneHandlerService;
 
@@ -12,5 +12,10 @@ public class LoadSceneUseCase : SceneLoader
     public async Task Load(string sceneName)
     {
         await _sceneHandlerService.LoadScene(sceneName);
+    }
+    
+    public void Dispose()
+    {
+
     }
 }

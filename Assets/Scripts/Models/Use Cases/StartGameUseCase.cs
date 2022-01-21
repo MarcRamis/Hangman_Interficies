@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
+using System;
 
-public class StartGameUseCase
+public class StartGameUseCase : IDisposable
 {
     IEventDispatcherService _eventDispatcher;
     IHangmanAPIService _hangmanAPIService;
@@ -20,5 +21,9 @@ public class StartGameUseCase
         _hangmanAPIService.GetButtonLetters();
         
         _eventDispatcher.Dispatch<LoadScreenEvent>();
+    }
+    public void Dispose()
+    {
+
     }
 }

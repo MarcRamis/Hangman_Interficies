@@ -43,14 +43,14 @@ public class MenuInstaller : MonoBehaviour
         var firebaseMessageService = new FireBaseMessageService(eventDispatcherService);
         var sceneHandlerService = new UnitySceneHandler();
         var analyticsEventsService = new AnalyticsEventsService(eventDispatcherService);
-
-        _editNameUseCase = new EditNameUseCase(firebaseStoreService, eventDispatcherService);
-        var createAccountUseCase = new CreateAccountUseCase(eventDispatcherService, _firebaseLogService);
+        
+        _editNameUseCase = new EditNameUseCase(firebaseStoreService, eventDispatcherService).AddTo(_disposables);
+        var createAccountUseCase = new CreateAccountUseCase(eventDispatcherService, _firebaseLogService).AddTo(_disposables);
         var loginUseCase = new LoginUseCase(_firebaseLogService, eventDispatcherService).AddTo(_disposables);
-        var logoutUseCase = new LogoutUseCase(eventDispatcherService, _firebaseLogService);
-        _sendMessageUseCase = new SendMessageUseCase(firebaseMessageService, eventDispatcherService);
-        var loadSceneUseCase = new LoadSceneUseCase(sceneHandlerService);
-        var analyticsEventUseCase = new SendAnalyticsEventsUseCase(analyticsEventsService, eventDispatcherService);
+        var logoutUseCase = new LogoutUseCase(eventDispatcherService, _firebaseLogService).AddTo(_disposables);
+        _sendMessageUseCase = new SendMessageUseCase(firebaseMessageService, eventDispatcherService).AddTo(_disposables);
+        var loadSceneUseCase = new LoadSceneUseCase(sceneHandlerService).AddTo(_disposables);
+        var analyticsEventUseCase = new SendAnalyticsEventsUseCase(analyticsEventsService, eventDispatcherService).AddTo(_disposables);
 
         new HomeController(homeViewModel,_editNameUseCase,loadSceneUseCase,analyticsEventUseCase).AddTo(_disposables);
         new ConfigController(configViewModel, createAccountUseCase, loginUseCase, logoutUseCase, _sendMessageUseCase, _editNameUseCase).AddTo(_disposables);
@@ -58,8 +58,8 @@ public class MenuInstaller : MonoBehaviour
 
         new HomePresenter(homeViewModel, eventDispatcherService).AddTo(_disposables);
         new ScorePresenter(scoreViewModel, eventDispatcherService).AddTo(_disposables);
-
-        _loadAllScoreUsersUseCase = new LoadAllScoreUsersUseCase(firebaseRealtimeDatabaseService, eventDispatcherService);
+        
+        _loadAllScoreUsersUseCase = new LoadAllScoreUsersUseCase(firebaseRealtimeDatabaseService, eventDispatcherService).AddTo(_disposables);
     }
 
     private async void Start()
