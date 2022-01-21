@@ -10,21 +10,21 @@ public class HangmanAPIService : IHangmanAPIService
     private string _token;
     private StringBuilder _correctLetters;
     private StringBuilder _incorrectLetters;
-    private RestClientAdapter _restClientAdapter;
+    private HangmanClient _hangmanClient;
 
     public HangmanAPIService(IEventDispatcherService eventDispatcher)
     {
         _eventDispatcher = eventDispatcher;
-        
-        _restClientAdapter = new RestClientAdapter();
+
+        _hangmanClient = new HangmanClient();
         _correctLetters = new StringBuilder();
         _incorrectLetters = new StringBuilder();
     }
     
     public async Task GetRandomLetter()
     {
-        var request = new NewGameRequest();
-        var response = await _restClientAdapter.Post<NewGameRequest, NewGameResponse>(EndPoints.NewGame, request);
+        var response = await _hangmanClient
+            .StartGame<NewGameResponse>(EndPoints.NewGame);
         UpdateToken(response.token);
         _eventDispatcher.Dispatch(new HangmanRandomNameEvent(AddSpacesBetweenLetters(response.hangman)));
 
@@ -42,14 +42,9 @@ public class HangmanAPIService : IHangmanAPIService
     }
     public async void GuessLetter(string letter)
     {
-        var request = new GuessLetterRequest { letter = letter, token = _token };
         var response = await
-            _restClientAdapter
-                .PutWithParametersOnUrl<GuessLetterRequest, GuessLetterResponse>
-                (
-                    EndPoints.GuessLetter,
-                    request
-                );
+            _hangmanClient.GuessLetter<GuessLetterResponse>
+                (EndPoints.GuessLetter, _token, letter);
 
         UpdateToken(response.token);
         SetGuessResponse(response, letter);
@@ -80,8 +75,9 @@ public class HangmanAPIService : IHangmanAPIService
     {
         var request = new GetSolutionRequest { token = _token };
         var response =
-            await _restClientAdapter.Get<GetSolutionRequest, GetSolutionResponse>(EndPoints.GetSolution,
-                request);
+            await _hangmanClient
+                .GetSolution<GetSolutionResponse>(EndPoints.GetSolution,
+                    _token);
 
         Debug.Log(response.solution);
     }
