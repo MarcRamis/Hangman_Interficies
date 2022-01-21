@@ -1,7 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using System.Threading.Tasks;
-public class SendAnalyticsEventsUseCase : ISendAnalyticsEventsUseCase
+using System;
+public class SendAnalyticsEventsUseCase : ISendAnalyticsEventsUseCase, IDisposable
 {
     private readonly IAnalyticsEventsService _analyticsService;
     private readonly IEventDispatcherService _eventDispatcherService;
@@ -24,5 +25,9 @@ public class SendAnalyticsEventsUseCase : ISendAnalyticsEventsUseCase
     public void ShowAd()
     {
         _analyticsService.ShowAd();
+    }
+    public void Dispose()
+    {
+
     }
 }

@@ -1,4 +1,6 @@
-﻿public class CreateAccountUseCase : ICreateAccountUseCase
+﻿using System;
+
+public class CreateAccountUseCase : ICreateAccountUseCase, IDisposable
 {
     IEventDispatcherService _eventDispatcher;
     IFirebaseLogService _firebaseLog;
@@ -12,5 +14,8 @@
     public void Register(UserNameLog userNameLog)
     {
         _firebaseLog.RegisterEmail(userNameLog);
+    }
+    public void Dispose()
+    {
     }
 }

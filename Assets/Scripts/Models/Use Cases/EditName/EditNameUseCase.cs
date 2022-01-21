@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System.Threading.Tasks;
-public class EditNameUseCase : IEditNameUseCase
+using System;
+
+public class EditNameUseCase : IEditNameUseCase, IDisposable
 {
     private readonly IFirebaseStoreService _firebaseStoreService;
     private readonly IEventDispatcherService _eventDispatcherService;
@@ -37,5 +39,7 @@ public class EditNameUseCase : IEditNameUseCase
     {
         _firebaseStoreService.SetCurrentUserNameInHome();
     }
-
+    public void Dispose()
+    {
+    }
 }

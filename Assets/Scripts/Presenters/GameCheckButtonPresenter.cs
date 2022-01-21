@@ -28,4 +28,9 @@ public class GameCheckButtonPresenter : Presenter
             }
         }
     }
+    public override void Dispose()
+    {
+        base.Dispose();
+        _eventDispatcher.Unsubscribe<ButtonCheckedEvent>(CheckButtonSolution);
+    }
 }
