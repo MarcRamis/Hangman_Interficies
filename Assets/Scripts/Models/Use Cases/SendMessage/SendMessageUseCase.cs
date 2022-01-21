@@ -22,9 +22,9 @@ public class SendMessageUseCase : ISendMessageUseCase
         yield return new WaitForSeconds(time);
         _fireBaseMessageService.Init();
     }
-    public async Task Init1()
+    public async Task InitByTask()
     {
-        await _fireBaseMessageService.Init1();
+        await _fireBaseMessageService.InitByTask();
     }
 
     public void End()

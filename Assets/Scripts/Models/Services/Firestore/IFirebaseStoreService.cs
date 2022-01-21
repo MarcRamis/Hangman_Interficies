@@ -2,7 +2,8 @@
 public interface IFirebaseStoreService
 {
     void GetCurrentUserName();
-    Task GetCurrentUserName1();
+    Task GetCurrentUserNameByTask();
+    void SetCurrentUserNameInHome();
     void StoreNewUserName(string newUserName);
     void LoadData();
 }

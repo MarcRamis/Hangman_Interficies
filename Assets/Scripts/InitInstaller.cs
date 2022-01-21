@@ -10,6 +10,7 @@ public class InitInstaller : MonoBehaviour
     [SerializeField] private InitView _initPrefab;
     FirebaseLogService _firebaseLogService;
     LoadInitialDataUseCase _loadInitialDataUseCase;
+    InitSceneUseCase _initSceneUseCase;
 
     private List<IDisposable> _disposables = new List<IDisposable>();
 
@@ -28,20 +29,25 @@ public class InitInstaller : MonoBehaviour
 
         var eventDispatcher = new EventDispatcherService();
         _firebaseLogService = new FirebaseLogService(eventDispatcher);
+        var firebaseStoreService = new FirebaseStoreService(eventDispatcher);
 
         var loginUseCase = new LoginUseCase(_firebaseLogService, eventDispatcher).AddTo(_disposables);
         var loadSceneUseCase = new LoadSceneUseCase(sceneHandlerService);
+        var editNameUseCase = new EditNameUseCase(firebaseStoreService, eventDispatcher);
 
         _loadInitialDataUseCase = new LoadInitialDataUseCase(loadSceneUseCase);
+
+        _initSceneUseCase = new InitSceneUseCase(eventDispatcher, _firebaseLogService, _loadInitialDataUseCase, editNameUseCase);
 
         new InitController(initViewModel).AddTo(_disposables);
         new InitPresenter(initViewModel, eventDispatcher).AddTo(_disposables);
     }
 
-    private async void Start()
+    private void Start()
     {
-        await _firebaseLogService.Init3();
-        await _loadInitialDataUseCase.Init();
+        _initSceneUseCase.Init();
+        //await _firebaseLogService.InitByTask();
+        //await _loadInitialDataUseCase.Init();
     }
 
     private void OnDestroy()

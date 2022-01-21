@@ -64,10 +64,11 @@ public class MenuInstaller : MonoBehaviour
 
     private async void Start()
     {
-        await _firebaseLogService.Init3();
+        //await _firebaseLogService.InitByTask();
         await _loadAllScoreUsersUseCase.GetAll();
-        await _editNameUseCase.Init1();
-        await _sendMessageUseCase.Init1();
+        //await _editNameUseCase.InitByTask(); //Poner esto en el init y cambiarlo por el nuevo set name de la use case
+        _editNameUseCase.SetUserNameFromFirestore();
+        await _sendMessageUseCase.InitByTask();
     }
 
     private void OnDestroy()

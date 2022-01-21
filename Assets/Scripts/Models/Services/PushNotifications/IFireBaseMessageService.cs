@@ -2,6 +2,6 @@ using System.Threading.Tasks;
 public interface IFireBaseMessageService
 {
     void Init();
-    Task Init1();
+    Task InitByTask();
     void UnSuscribe();
 }
