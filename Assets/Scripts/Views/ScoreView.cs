@@ -46,6 +46,5 @@ public class ScoreView : View
         {
             Destroy(child.transform.gameObject);
         }
-        Debug.Log("Limpio");
     }
 }

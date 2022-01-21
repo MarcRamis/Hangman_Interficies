@@ -21,19 +21,19 @@ public class GameInstaller : MonoBehaviour
         var eventDispatcher = new EventDispatcherService();
         var hangmanService = new HangmanAPIService(eventDispatcher);
         var sceneHandlerService = new UnitySceneHandler();
-        var googleMobileAdsServoce = new GoogleMobileAdsService();
+        var googleMobileAdsService = new GoogleMobileAdsService();
         var realtimeDatabase = new FirebaseRealtimeDatabaseService(eventDispatcher);
         var analyticsEventsService = new AnalyticsEventsService(eventDispatcher);
 
-        var updateGameUseCase = new UpdateGameUseCase(eventDispatcher, hangmanService, googleMobileAdsServoce, analyticsEventsService/*, realtimeDatabase*/);
-        var loadSceneUseCase = new LoadSceneUseCase(sceneHandlerService);
-        var analyticsEventUseCase = new SendAnalyticsEventsUseCase(analyticsEventsService, eventDispatcher);
+        var _updateGameUseCase = new UpdateGameUseCase(eventDispatcher, hangmanService, googleMobileAdsService, analyticsEventsService, realtimeDatabase).AddTo(_disposables);
+        var loadSceneUseCase = new LoadSceneUseCase(sceneHandlerService).AddTo(_disposables);
+        var analyticsEventUseCase = new SendAnalyticsEventsUseCase(analyticsEventsService, eventDispatcher).AddTo(_disposables);
+        
+        gameView.SetViewModel(gameViewModel, _updateGameUseCase, eventDispatcher);
+        
+        _startGameUseCase = new StartGameUseCase(eventDispatcher, hangmanService, googleMobileAdsService).AddTo(_disposables);
 
-        gameView.SetViewModel(gameViewModel, updateGameUseCase, eventDispatcher);
-
-        _startGameUseCase = new StartGameUseCase(eventDispatcher, hangmanService);
-
-        new GameController(gameViewModel,updateGameUseCase,loadSceneUseCase, analyticsEventUseCase).AddTo(_disposables);
+        new GameController(gameViewModel, _updateGameUseCase, loadSceneUseCase, analyticsEventUseCase).AddTo(_disposables);
         new GamePresenter(gameViewModel, eventDispatcher).AddTo(_disposables);
     }
 

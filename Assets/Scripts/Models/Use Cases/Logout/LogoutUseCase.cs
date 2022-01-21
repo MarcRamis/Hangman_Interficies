@@ -1,5 +1,6 @@
-﻿
-public class LogoutUseCase : ILogoutUseCase
+﻿using System;
+
+public class LogoutUseCase : ILogoutUseCase, IDisposable
 {
     IEventDispatcherService _eventDispatcher;
     IFirebaseLogService _firebaseLog;
@@ -13,5 +14,8 @@ public class LogoutUseCase : ILogoutUseCase
     public void Logout()
     {
         _firebaseLog.Logout();
+    }
+    public void Dispose()
+    {
     }
 }

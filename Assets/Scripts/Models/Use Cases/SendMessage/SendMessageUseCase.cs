@@ -1,7 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using System.Threading.Tasks;
-public class SendMessageUseCase : ISendMessageUseCase
+using System;
+public class SendMessageUseCase : ISendMessageUseCase, IDisposable
 {
     private readonly IEventDispatcherService _eventDispatcherService;
     private readonly IFireBaseMessageService _fireBaseMessageService;
@@ -30,5 +31,9 @@ public class SendMessageUseCase : ISendMessageUseCase
     public void End()
     {
         _fireBaseMessageService.UnSuscribe();
+    }
+    public void Dispose()
+    {
+
     }
 }

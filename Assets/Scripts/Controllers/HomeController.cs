@@ -19,8 +19,6 @@ public class HomeController : Controller
         _viewModel.PlayButtonPressed.Subscribe((_) =>
         {
             _sceneLoader.Load("Game");
-            Debug.Log("Go Play");
-
             _sendAnalyticsUseCase.SendLevelStart(0);
 
         }).AddTo(_disposables);
