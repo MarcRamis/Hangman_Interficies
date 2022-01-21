@@ -6,16 +6,23 @@ public class HomeController : Controller
     private readonly HomeViewModel _viewModel;
     private readonly IEditNameUseCase _editNameUseCase;
     private readonly SceneLoader _sceneLoader;
+    private readonly ISendAnalyticsEventsUseCase _sendAnalyticsUseCase;
 
-    public HomeController(HomeViewModel viewModel, IEditNameUseCase editNameUseCase, SceneLoader sceneLoader)
+    public HomeController(HomeViewModel viewModel, IEditNameUseCase editNameUseCase, ISendAnalyticsEventsUseCase sendAnalyticsUseCase)
     {
         _viewModel = viewModel;
         _editNameUseCase = editNameUseCase;
         _sceneLoader = sceneLoader;
         
+        _sendAnalyticsUseCase = sendAnalyticsUseCase;
+
         _viewModel.PlayButtonPressed.Subscribe((_) =>
         {
             _sceneLoader.Load("Game");
+            Debug.Log("Go Play");
+
+            _sendAnalyticsUseCase.SendLevelStart(0);
+
         }).AddTo(_disposables);
 
         _viewModel.ProfileButtonPressed.Subscribe((_) =>

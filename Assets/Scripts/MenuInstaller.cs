@@ -42,6 +42,7 @@ public class MenuInstaller : MonoBehaviour
         _firebaseLogService = new FirebaseLogService(eventDispatcherService);
         var firebaseMessageService = new FireBaseMessageService(eventDispatcherService);
         var sceneHandlerService = new UnitySceneHandler();
+        var analyticsEventsService = new AnalyticsEventsService(eventDispatcherService);
 
         _editNameUseCase = new EditNameUseCase(firebaseStoreService, eventDispatcherService);
         var createAccountUseCase = new CreateAccountUseCase(eventDispatcherService, _firebaseLogService);
@@ -49,8 +50,9 @@ public class MenuInstaller : MonoBehaviour
         var logoutUseCase = new LogoutUseCase(eventDispatcherService, _firebaseLogService);
         _sendMessageUseCase = new SendMessageUseCase(firebaseMessageService, eventDispatcherService);
         var loadSceneUseCase = new LoadSceneUseCase(sceneHandlerService);
+        var analyticsEventUseCase = new SendAnalyticsEventsUseCase(analyticsEventsService, eventDispatcherService);
 
-        new HomeController(homeViewModel,_editNameUseCase, loadSceneUseCase).AddTo(_disposables);
+        new HomeController(homeViewModel,_editNameUseCase,loadSceneUseCase,analyticsEventUseCase).AddTo(_disposables);
         new ConfigController(configViewModel, createAccountUseCase, loginUseCase, logoutUseCase, _sendMessageUseCase, _editNameUseCase).AddTo(_disposables);
         new ButtonsController(buttonsViewModel, homeViewModel, scoreViewModel, configViewModel).AddTo(_disposables);
 
