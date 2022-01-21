@@ -118,7 +118,7 @@ public partial class FirebaseRealtimeDatabaseService : IFirebaseRealtimeDatabase
     {
         DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
         
-        reference.Child("users").SetValueAsync("Adriaánasdjasoijf");
+        //reference.Child("users").SetValueAsync("Adriaánasdjasoijf");
     }
     public async Task SaveUserID(UserEntity userID)
     {

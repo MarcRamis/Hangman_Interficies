@@ -6,12 +6,12 @@ public class UpdateGameUseCase : IUpdateGameUseCase
     IGoogleMobileAdsService _googleMobileAds;
     IFirebaseRealtimeDatabaseService _firebaseRealtime;
 
-    public UpdateGameUseCase(IEventDispatcherService eventDispatcher, IHangmanAPIService hangmanAPI, IGoogleMobileAdsService googleMobileAds, IFirebaseRealtimeDatabaseService firebaseRealtime)
+    public UpdateGameUseCase(IEventDispatcherService eventDispatcher, IHangmanAPIService hangmanAPI, IGoogleMobileAdsService googleMobileAds/*, IFirebaseRealtimeDatabaseService firebaseRealtime*/)
     {
         _eventDispatcher = eventDispatcher;
         _hangmanAPI = hangmanAPI;
         _googleMobileAds = googleMobileAds;
-        _firebaseRealtime = firebaseRealtime;
+        /*_firebaseRealtime = firebaseRealtime;*/
     }
 
     public void CheckButton(string letter)
@@ -31,7 +31,7 @@ public class UpdateGameUseCase : IUpdateGameUseCase
     }
     public async void GoMenu()
     {
-        var scoreuser = new ScoreUserPrefs();
-        _firebaseRealtime.SaveScore(scoreuser);
+        //var scoreuser = new ScoreUserPrefs();
+        //_firebaseRealtime.SaveScore(scoreuser);
     }
 }
