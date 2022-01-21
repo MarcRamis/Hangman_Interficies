@@ -28,8 +28,14 @@ public class EditNameUseCase : IEditNameUseCase
         _firebaseStoreService.GetCurrentUserName();
     }
 
-    public async Task Init1()
+    public async Task InitByTask()
     {
-        await _firebaseStoreService.GetCurrentUserName1();
+        await _firebaseStoreService.GetCurrentUserNameByTask();
     }
+
+    public void GetUserName()
+    {
+        _firebaseStoreService.SetCurrentUserNameInHome();
+    }
+
 }

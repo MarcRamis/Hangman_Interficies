@@ -24,7 +24,7 @@ public class FirebaseLogService : IFirebaseLogService
         }
     }
 
-    public async Task Init3()
+    public async Task InitByTask()
     {
         var dependencyStatus = await Firebase.FirebaseApp.CheckAndFixDependenciesAsync();
 
@@ -38,7 +38,24 @@ public class FirebaseLogService : IFirebaseLogService
             return;
         }
 
-        eventDispatcher.Dispatch(new LoggedEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null));
+        //eventDispatcher.Dispatch(new LoggedEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null));
+
+        if (Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser != null)
+        {
+            if (GetCurrentUser() != null)
+            {
+                await LogEmailByTask(GetCurrentUser());
+            }
+            else
+            {
+                ServiceLocator.Instance.playerInfo.SetUserID(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+            }
+        }
+        else
+        {
+            await LogAnonymByTask();
+        }
+
     }
 
     public void Init()
@@ -80,11 +97,30 @@ public class FirebaseLogService : IFirebaseLogService
             }
 
             Firebase.Auth.FirebaseUser newUser = task.Result;
+            ServiceLocator.Instance.playerInfo.SetUserID(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
             Debug.Log("Usuario anonimo creado");
 
             SetDefaultData();
             eventDispatcher.Dispatch(new LogEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId));
+            
         });
+        
+    }
+
+    public async Task LogAnonymByTask()
+    {
+        Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        var dependencyStatus = await auth.SignInAnonymouslyAsync();
+
+        Debug.Log("Usuario anonimo creado");
+
+        ServiceLocator.Instance.playerInfo.SetUserID(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+
+        SetDefaultData();
+        eventDispatcher.Dispatch(new LogEvent(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId));
+        
+
+
     }
 
     public void LogEmail(UserNameLog userNameLog)
@@ -104,6 +140,7 @@ public class FirebaseLogService : IFirebaseLogService
             }
 
             Firebase.Auth.FirebaseUser newUser = task.Result;
+            ServiceLocator.Instance.playerInfo.SetUserID(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
 
@@ -114,6 +151,26 @@ public class FirebaseLogService : IFirebaseLogService
             }
 
         });
+        
+    }
+    public async Task LogEmailByTask(UserNameLog userNameLog)
+    {
+        Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        var dependencyStatus = await auth.SignInWithEmailAndPasswordAsync(userNameLog.Email, userNameLog.Password);
+            
+
+        Firebase.Auth.FirebaseUser newUser = dependencyStatus;
+        ServiceLocator.Instance.playerInfo.SetUserID(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+        Debug.LogFormat("User signed in successfully: {0} ({1})",
+            newUser.DisplayName, newUser.UserId);
+
+        if (_currentUser == null)
+        {
+            SaveUserNameOnPlayerPrefs(userNameLog);
+            SetCurrentUser();
+        }
+
+
     }
     public void Logout()
     {
@@ -142,6 +199,7 @@ public class FirebaseLogService : IFirebaseLogService
 
             // Firebase user has been created.
             Firebase.Auth.FirebaseUser newUser = task.Result;
+            ServiceLocator.Instance.playerInfo.SetUserID(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
             Debug.LogFormat("Firebase user created successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
 
@@ -149,13 +207,14 @@ public class FirebaseLogService : IFirebaseLogService
             SetCurrentUser();
             SetDefaultData();
         });
+        
     }
 
     public void SetDefaultData()
     {
         FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
         var user = new User("DefaultName");
-        DocumentReference docRef = db.Collection("users").Document(Firebase.Auth.FirebaseAuth.DefaultInstance.CurrentUser.UserId);
+        DocumentReference docRef = db.Collection("users").Document(ServiceLocator.Instance.playerInfo.GetUserID());
 
         docRef.SetAsync(user).ContinueWithOnMainThread(task =>
         {
